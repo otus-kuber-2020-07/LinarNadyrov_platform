@@ -1,10 +1,9 @@
-# LinarNadyrov_platform
 **Задание 1** 
 
 Разберитесь почему все pod в namespace kube-system восстановились после удаления. Укажите причину в описании PR. \ 
 Hint: core-dns и, например, kube-apiserver, имеют различия в механизме запуска и восстанавливаются по разным причинам
 
-**Решение**
+**Решение** \
 Поды кроме coredns это static Pods управляемые напрямую kubelet'ом. Описания подов хранятся тут:
 ```bash
 $ ls -lah /etc/kubernetes/manifests/
@@ -28,5 +27,4 @@ Labels:                 k8s-app=kube-dns
 Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               k8s-app=kube-dns
 Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
-
 ```
