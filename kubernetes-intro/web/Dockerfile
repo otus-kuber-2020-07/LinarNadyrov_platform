@@ -21,4 +21,5 @@ RUN sed -i 's/user  nginx/user www/' ${NGINX}/nginx.conf && \
     chown -R ${USER}:${USER} /app 
 
 USER ${USER}
+EXPOSE 8000
 CMD /usr/sbin/nginx -g 'daemon off;'
