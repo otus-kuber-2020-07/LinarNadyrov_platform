@@ -27,3 +27,9 @@ Annotations:            deployment.kubernetes.io/revision: 1
 Selector:               k8s-app=kube-dns
 Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavailable
 ```
+
+Выясните причину, по которой pod frontend находится в статусе **Error** \
+Потому, что не определено: 
+```sh
+panic: environment variable "PRODUCT_CATALOG_SERVICE_ADDR" not set
+```
