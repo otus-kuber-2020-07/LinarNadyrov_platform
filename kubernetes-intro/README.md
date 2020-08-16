@@ -8,6 +8,10 @@
 - Написан Dockerfile и собран контейнер с веб серевером
 - Контейнеры помещены в [docker hub](https://hub.docker.com/repository/docker/linarnadyrov/hipster-frontend) 
 
+---
+
+### Решение Д/З №1
+
 - Разберитесь почему все pod в namespace kube-system восстановились после удаления. Укажите причину в описании PR.Hint: core-dns и, например, kube-apiserver, имеют различия в механизме запуска и восстанавливаются по разным причинам. \
 Поды кроме coredns это [static Pods](https://kubernetes.io/docs/tasks/configure-pod-container/static-pod/)  управляемые напрямую kubelet'ом. Описания подов хранятся тут:
 ```
@@ -38,5 +42,7 @@ Replicas:               1 desired | 1 updated | 1 total | 1 available | 0 unavai
 ```sh
 panic: environment variable "PRODUCT_CATALOG_SERVICE_ADDR" not set
 ```
+
+
 
 
