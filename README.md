@@ -1,4 +1,5 @@
 ## Инфраструктурная платформа на основе Kubernetes
+[Полезные команды](cli/README.md)
 
 ### 1. Kubernetes-intro
 ### Задание: 
@@ -25,10 +26,10 @@
    #### Reverse Rolling Update:
    Удаление одного старого pod \
    Создание одного нового pod \
-    ....
+   ....
+
 - ⭐ Написать манифест DaemonSet для node-exporter
 - ⭐⭐ Дописать tolerans для DaemonSet
-
 
 #### Полезные ссылки 
 - [kind](https://kind.sigs.k8s.io/)
@@ -44,31 +45,3 @@
 
 ## Доп информация 
 
->Применяем указанный манифест + смотрим какие шаги в данный момент происходят
-```
-kubectl apply -f paymentservice-deployment.yaml | kubectl get pods -l app=paymentservice
--w
-```
->Проверим образ, указанный в манифест (в данном случае указанный в **deployments**)
-```
-kubectl get deployments.apps paymentservice -o=jsonpath='{.spec.template.spec.containers[0].image}'
-```
->Проверяем образ из которого сейчас запущены pod, управляемые контроллером
-```
-kubectl get pods -l app=paymentservice -o=jsonpath='{.items[0:3].spec.containers[0].image}'
-```
->Смотрим на историю версий нашего Deployment
-```
-kubectl rollout history deployment paymentservice
-```
->Представим, что обновление по каким-то причинам произошло неудачно и нам необходимо сделать откат. Kubernetes предоставляет такую возможность:
-```
-kubectl rollout undo deployment paymentservice --to-revision=1 | kubectl get rs -l app=paymentservice -w
-```
-В выводе мы можем наблюдать, как происходит постепенное масштабирование вниз "нового" ReplicaSet, и масштабирование вверх "старого".
-
->Как автоматически отследить успешность выполнения Deployment (например для запуска в CI/CD).
-В этом нам может помочь следующая команда:
-```
-kubectl rollout status deployment frontend
-```
