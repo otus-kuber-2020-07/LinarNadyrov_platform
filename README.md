@@ -17,19 +17,20 @@
 ### 2. Kubernetes-controllers
 ### Задание:
 - Руководствуясь материалами лекции опишите произошедшую ситуацию, почему обновление ReplicaSet не повлекло обновление запущенных pod?
-- ⭐ Deployment | С использованием параметров maxSurge и maxUnavailable реализуйте два следующих сценария развертывания:
+- ⭐ Deployment | С использованием параметров **maxSurge** и **maxUnavailable** самостоятельно реализуйте два следующих сценария развертывания:
+   #### Аналог blue-green:
+   Развертывание трех новых pod
+   Удаление трех старых pod
+
 ```
-   **Аналог blue-green:**
- - Развертывание трех новых pod
- - Удаление трех старых pod
-```
-```
-   **Reverse Rolling Update:**
+    Reverse Rolling Update:
   - Удаление одного старого pod
   - Создание одного нового pod 
   - ....
   - ....
 ```
+- ⭐ Написать манифест DaemonSet для node-exporter
+- ⭐ Дописать tolerans для DaemonSet'a
 
 
 #### Полезные ссылки 
@@ -73,36 +74,4 @@ kubectl rollout undo deployment paymentservice --to-revision=1 | kubectl get rs 
 В этом нам может помочь следующая команда:
 ```
 kubectl rollout status deployment frontend
-```
-
-## Deployment | Задание-2 со ⭐
-
-С использованием параметров **maxSurge** и **maxUnavailable** самостоятельно реализуйте два следующих сценария развертывания:
-1. **Аналог blue-green:**
- - Развертывание трех новых pod
- - Удаление трех старых pod
-2. **Reverse Rolling Update:**
-  - Удаление одного старого pod
-  - Создание одного нового pod 
-  - ....
-  - ....
-
-## DaemonSet | Задание-2 со ⭐
-
-Опробуем DaemonSet на примере [Node Exporter](https://github.com/prometheus/node_exporter)
-1. Найдите в интернете или напишите самостоятельно манифест node-exporter-daemonset.yaml для развертывания DaemonSet с Node Exporter.
-2. После применения данного DaemonSet и выполнения команды:
-``` kubectl port-forward <имя любого pod в DaemonSet> 9100:9100``` метрики должны быть доступны на localhost: curl localhost:9100/metrics
-
-## DaemonSet | Задание-2 со ⭐⭐
-
-- Как правило, мониторинг требуется не только для worker, но и для master нод. При этом, по умолчанию, pod управляемые DaemonSet на master нодах не разворачиваются
-- Найдите способ модернизировать свой DaemonSet таким образом, чтобы Node Exporter был развернут как на master, так и на worker нодах (конфигурацию самих нод изменять нельзя)
-- Отразите изменения в манифесте. 
-
-Нужно добавить: 
-```
-    spec:
-      tolerations:
-      - operator: "Exists"
 ```
