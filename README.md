@@ -42,6 +42,3 @@
 - [Node-exporter](https://github.com/prometheus/node_exporter)
 - [Taints and Toleration](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#concepts)
 - [Описание выполненного ДЗ](kubernetes-controllers/README.md)
-
-## Доп информация 
-
