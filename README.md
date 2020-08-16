@@ -1,3 +1,5 @@
+# Инфраструктурная платформа на основе Kubernetes
+
 ## Задание-1
 
 Разберитесь почему все pod в namespace kube-system восстановились после удаления. Укажите причину в описании PR.Hint: core-dns и, например, kube-apiserver, имеют различия в механизме запуска и восстанавливаются по разным причинам
@@ -84,7 +86,7 @@ kubectl rollout status deployment frontend
 
 ## DaemonSet | Задание-2 со ⭐
 
-Опробуем DaemonSet на примере [Node Exporter](https://github.com/prometheus/node_exporter) \
+Опробуем DaemonSet на примере [Node Exporter](https://github.com/prometheus/node_exporter)
 1. Найдите в интернете или напишите самостоятельно манифест node-exporter-daemonset.yaml для развертывания DaemonSet с Node Exporter.
 2. После применения данного DaemonSet и выполнения команды:
 ``` kubectl port-forward <имя любого pod в DaemonSet> 9100:9100``` метрики должны быть доступны на localhost: curl localhost:9100/metrics
