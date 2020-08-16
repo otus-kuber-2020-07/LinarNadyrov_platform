@@ -25,9 +25,9 @@
    #### Reverse Rolling Update:
    Удаление одного старого pod \
    Создание одного нового pod \
-    .... \
+    ....
 - ⭐ Написать манифест DaemonSet для node-exporter
-- ⭐⭐ Дописать tolerans для DaemonSet'a
+- ⭐⭐ Дописать tolerans для DaemonSet
 
 
 #### Полезные ссылки 
