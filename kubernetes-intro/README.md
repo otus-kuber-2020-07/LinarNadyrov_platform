@@ -44,5 +44,16 @@ panic: environment variable "PRODUCT_CATALOG_SERVICE_ADDR" not set
 ```
 
 
+### Как проверить работоспособность:
 
+ - Выполнить команды:
+  ```shell
+  kubectl port-forward --address 0.0.0.0 pod/web 8000:8000 &
+  curl http://127.0.0.1:8000
+  ```
+
+ - :star: Выполнить команду:
+ ```shell
+ kubectl get pods -l run=frontend --field-selector=status.phase=Running
+ ```
 
