@@ -14,10 +14,23 @@
 - [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 - [Описание выполненного ДЗ](kubernetes-intro/README.md)
 
-## Задание-2 
-Руководствуясь материалами лекции опишите произошедшую ситуацию, почему обновление ReplicaSet не повлекло обновление запущенных pod? \
-Ответ: 
-Replica**Controller не умеют рестартовать запущенные поды при обновлении шаблона
+### 2. Kubernetes-controllers
+### Задание:
+- Руководствуясь материалами лекции опишите произошедшую ситуацию, почему обновление ReplicaSet не повлекло обновление запущенных pod?
+- 
+
+
+#### Полезные ссылки 
+- [kind](https://kind.sigs.k8s.io/)
+- [ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/)
+- [Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
+- [Deployment Update Strategy](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#strategy)
+- [Blue-green strategy](https://www.redhat.com/en/topics/devops/what-is-blue-green-deployment)
+- [ReadinessProbe](https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/#define-readiness-probes)
+- [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/)
+- [Node-exporter](https://github.com/prometheus/node_exporter)
+- [Taints and Toleration](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#concepts)
+- [Описание выполненного ДЗ](kubernetes-controllers/README.md)
 
 ## Доп информация 
 
