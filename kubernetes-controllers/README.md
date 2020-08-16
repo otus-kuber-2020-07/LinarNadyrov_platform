@@ -2,6 +2,7 @@
 
  - [x] Основное ДЗ
  - [x] Задание со *
+ - [x] Задание со **
 
 ### В процессе сделано:
 - Создан и запущен локальный кластер k8s на основе [kind](https://kind.sigs.k8s.io/docs/user/quick-start/) 
@@ -9,6 +10,9 @@
 - Написан Dockerfile и собран контейнер ***paymentService***
 - Контейнеры помещены в [docker hub](https://hub.docker.com/repository/docker/linarnadyrov/paymentservice) 
 - Написан манифест Deployment - ***paymentservice-replicaset.yaml***
+- Реализован blue-green - ***paymentservice-deployment-bg.yaml***
+- Реализован Reverse Rolling Update - ***paymentservice-deployment-reverse.yaml***
+- Написан манифест DaemonSet для node-exporter - ***node-exporter-daemonset.yaml***
 
 ---
 
@@ -61,21 +65,13 @@ Replica**Controller не умеют рестартовать запущенны�
 Результат - ***node-exporter-daemonset.yaml***
 
 
-
-
-
-
-
 ### Как проверить работоспособность:
 
  - Выполнить команды:
-  ```shell
-  kubectl port-forward --address 0.0.0.0 pod/web 8000:8000 &
-  curl http://127.0.0.1:8000
+  ```
+  kubectl apply -f node-exporter-daemonset.yaml 
+  kubectl port-forward <имя любого pod в DaemonSet> 9100:9100
+  curl localhost:9100/metrics
   ```
 
- - :star: Выполнить команду:
- ```shell
- kubectl get pods -l run=frontend --field-selector=status.phase=Running
- ```
 
