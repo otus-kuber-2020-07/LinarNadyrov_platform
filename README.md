@@ -22,15 +22,12 @@
    Развертывание трех новых pod \
    Удаление трех старых pod
 
-```
-    Reverse Rolling Update:
-  - Удаление одного старого pod
-  - Создание одного нового pod 
-  - ....
-  - ....
-```
+   #### Reverse Rolling Update:
+   Удаление одного старого pod \
+   Создание одного нового pod \
+    .... \
 - ⭐ Написать манифест DaemonSet для node-exporter
-- ⭐ Дописать tolerans для DaemonSet'a
+- ⭐⭐ Дописать tolerans для DaemonSet'a
 
 
 #### Полезные ссылки 
