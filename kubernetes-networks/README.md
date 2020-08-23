@@ -16,11 +16,13 @@
 - Установка Ingress-контроллера и прокси ingress-nginx
 - Создание правил Ingress
 
-- Добавление проверок Pod
+#### Добавление проверок Pod
 Добавляем readinessProbe и livenessProbe. Получаем файл web-pod.yml
 - Создание объекта Deployment 
-Создали файл web-deploy.yaml, сделали шаблон конфигурации пода, исправили readinessProbe = 8000 и replicas = 3, добавили RollingUpdate. \
+#### Создали файл web-deploy.yaml, сделали шаблон конфигурации пода, исправили readinessProbe = 8000 и replicas = 3, добавили RollingUpdate.
 Узнал, что можно наблюдать за процессом с помощью 
 ```
 kubectl get events --watch
 ```
+#### Добавление сервисов в кластер ( ClusterIP )
+
