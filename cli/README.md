@@ -1,3 +1,19 @@
+##### Автодополнение ввода для Kubectl в BASH
+```
+source <(kubectl completion bash) 
+# настройка автодополнения в текущую сессию bash, предварительно должен быть установлен пакет bash-completion .
+echo "source <(kubectl completion bash)" >> ~/.bashrc 
+# добавление автодополнения autocomplete постоянно в командную оболочку bash.
+```
+##### Автодополнение ввода для Kubectl в ZSH
+```
+source <(kubectl completion zsh)
+# настройка автодополнения в текущую сессию zsh
+echo "[[ $commands[kubectl] ]] && source <(kubectl completion zsh)" >> ~/.zshrc 
+# add autocomplete permanently to your zsh shell
+```
+[Шпаргалка по kubectl](https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/)
+
 ##### Применяем указанный манифест + смотрим какие шаги в данный момент происходят
 ```
 kubectl apply -f paymentservice-deployment.yaml | kubectl get pods -l app=paymentservice -w
@@ -23,8 +39,16 @@ kubectl rollout undo deployment paymentservice --to-revision=1 | kubectl get rs 
 ##### Как автоматически отследить успешность выполнения Deployment (например для запуска в CI/CD). В этом нам может помочь следующая команда:
 ```
 kubectl rollout status deployment frontend
-```
 
+```
+##### Данные из **metrics-server**
+```
+kubectl get pods --all-namespaces
+kubectl top pods --all-namespaces
+kubectl top pods --all-namespaces -l tier=control-plane --sort-by=cpu
+kubectl top nodes --sort-by=cpu 
+kubectl get pods --all-namespaces --show-labels
+```
 Команды:
 ```bash
 kubectl cluster-info - Показывает информацию о Kubernetes master
