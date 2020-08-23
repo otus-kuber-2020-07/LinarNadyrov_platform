@@ -42,3 +42,17 @@
 - [Node-exporter](https://github.com/prometheus/node_exporter)
 - [Taints and Toleration](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#concepts)
 - [Описание выполненного ДЗ](kubernetes-controllers/README.md)
+
+### 3. Kubernetes-security
+### Задание:
+- Создание ServiceAccount
+- Создание Namespaces
+- Создание Role, RoleBinding
+- Создание ClusterRole, ClusterRoleBinding
+#### Полезные ссылки 
+- [Описание выполненного ДЗ](kubernetes-security/README.md)
+- [Понимаем RBAC в Kubernetes](https://habr.com/ru/company/flant/blog/422801/)
+- [RBAC в Kubernetes](https://rtfm.co.ua/kubernetes-znakomstvo-chast-5-rbac-avtorizaciya-i-primery-role-i-rolebinding/#Kubernetes_RBAC_%E2%80%94_%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80)
+
+
+
