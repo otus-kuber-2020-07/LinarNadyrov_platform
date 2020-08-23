@@ -1,0 +1,44 @@
+# Создать Namespace prometheus
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: prometheus
+---
+# Создать Service Account carol в этом Namespace
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: carol
+  namespace: prometheus
+---
+
+# Дать всем Service Account в Namespace prometheus возможность делать get, list, watch 
+# в отношении Pods всего кластера
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+    name: task02
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+      - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: task02
+# Привязка ссылается на ClusterRole (смотри выше)
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: task02 
+subjects:
+  - kind: ServiceAccount
+    name: carol
+    namespace: prometheus
+
