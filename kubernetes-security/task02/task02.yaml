@@ -38,7 +38,10 @@ roleRef:
   kind: ClusterRole
   name: task02 
 subjects:
-  - kind: ServiceAccount
-    name: carol
+  - kind: Group
+    name: system:serviceaccounts:prometheus
     namespace: prometheus
+  # - kind: ServiceAccount
+  #   name: carol
+  #   namespace: prometheus
 
