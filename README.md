@@ -54,5 +54,13 @@
 - [Понимаем RBAC в Kubernetes](https://habr.com/ru/company/flant/blog/422801/)
 - [RBAC в Kubernetes](https://rtfm.co.ua/kubernetes-znakomstvo-chast-5-rbac-avtorizaciya-i-primery-role-i-rolebinding/#Kubernetes_RBAC_%E2%80%94_%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80)
 
+### 4. Kubernetes-networks
+### Задание: 
+- Добавляем проверок Pod с помощью readinessProbe и livenessProbe
 
-
+#### Полезные ссылки 
+- [Описание выполненного ДЗ](kubernetes-networks/README.md)
+- [Настройка Liveness, Readiness и Startup проб](https://kubernetes.io/ru/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+- [Kubernetes Services and Iptables](https://msazure.club/kubernetes-services-and-iptables/)
+- [Bare-metal considerations](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
+- 
