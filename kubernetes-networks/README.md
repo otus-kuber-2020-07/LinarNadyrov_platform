@@ -38,7 +38,8 @@ kubectl create secret generic -n metallb-system memberlist --fromliteral=secretk
 ```
 kubectl --namespace metallb-system get all
 ```
-Настройка балансировщика с помощью ConfigMap \ 
+Настройка балансировщика с помощью ConfigMap \
+ 
 В конфигурации настраиваем:
 - Режим L2 (анонс адресов балансировщиков с помощью ARP)
 - Создаем пул адресов 172.17.255.1 - 172.17.255.255 - они будут назначаться сервисам с типом LoadBalancer \
