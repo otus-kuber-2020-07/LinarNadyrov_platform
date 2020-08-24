@@ -38,16 +38,17 @@ kubectl create secret generic -n metallb-system memberlist --fromliteral=secretk
 ```
 kubectl --namespace metallb-system get all
 ```
-Настройка балансировщика с помощью ConfigMap \
- 
+Настройка балансировщика с помощью ConfigMap
+
 В конфигурации настраиваем:
 - Режим L2 (анонс адресов балансировщиков с помощью ARP)
 - Создаем пул адресов 172.17.255.1 - 172.17.255.255 - они будут назначаться сервисам с типом LoadBalancer \
 
-Смотри файл - metallb-config.yaml, web-svc-lb.yaml \ 
+Смотри файл - metallb-config.yaml, web-svc-lb.yaml 
 
 #### ⭐ DNS через MetalLB
-- Сделайте сервис LoadBalancer , который откроет доступ к CoreDNS снаружи кластера (позволит получать записи через внешний IP). \ 
+- Сделайте сервис LoadBalancer , который откроет доступ к CoreDNS снаружи кластера (позволит получать записи через внешний IP).
+
 Например, nslookup web.default.cluster.local 172.17.255.10.
 - Поскольку DNS работает по TCP и UDP протоколам - учтите это в конфигурации. Оба протокола должны работать по одному и тому же IP-адресу балансировщика.
 - Полученные манифесты положите в подкаталог ./coredns
@@ -57,7 +58,7 @@ kubectl --namespace metallb-system get all
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingressnginx/master/deploy/static/provider/baremetal/deploy.yaml
 ```
-- После установки основных компонентов, в рекомендуется применить манифест, который создаст NodePort -сервис. Но у нас есть MetalLB, мы можем сделать круче.\
+- После установки основных компонентов, в рекомендуется применить манифест, который создаст NodePort -сервис. Но у нас есть MetalLB, мы можем сделать круче.
 
 Получаем манифест - nginx-lb.yaml 
 
