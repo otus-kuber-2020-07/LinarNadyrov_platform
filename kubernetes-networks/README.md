@@ -47,10 +47,8 @@ kubectl --namespace metallb-system get all
 
 #### ⭐ DNS через MetalLB
 - Сделайте сервис LoadBalancer , который откроет доступ к CoreDNS снаружи кластера (позволит получать записи через внешний IP). \ 
-Например, nslookup web.default.cluster.local 172.17.255.10. \ 
-
-- Поскольку DNS работает по TCP и UDP протоколам - учтите это в конфигурации. Оба протокола должны работать по одному и тому же IP-адресу балансировщика. \
-
+Например, nslookup web.default.cluster.local 172.17.255.10.
+- Поскольку DNS работает по TCP и UDP протоколам - учтите это в конфигурации. Оба протокола должны работать по одному и тому же IP-адресу балансировщика.
 - Полученные манифесты положите в подкаталог ./coredns
 
 #### Создание Ingress
@@ -58,7 +56,8 @@ kubectl --namespace metallb-system get all
 ```
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingressnginx/master/deploy/static/provider/baremetal/deploy.yaml
 ```
-- После установки основных компонентов, в рекомендуется применить манифест, который создаст NodePort -сервис. Но у нас есть MetalLB, мы можем сделать круче. \ 
+- После установки основных компонентов, в рекомендуется применить манифест, который создаст NodePort -сервис. Но у нас есть MetalLB, мы можем сделать круче.\
+
 Получаем манифест - nginx-lb.yaml 
 
 #### Подключение приложение Web к Ingress
@@ -74,7 +73,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingressnginx/maste
 - Написанные вами манифесты положите в подкаталог ./dashboard
 
 #### ⭐ | Canary для Ingress - НЕ ВЫПОЛНЕНО 
-Реализуйте канареечное развертывание с помощью ingress-nginx: \
+Реализуйте канареечное развертывание с помощью ingress-nginx:
 - Перенаправление части трафика на выделенную группу подов должно происходить по HTTP-заголовку.
 Документация [тут](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#canary)
 - Естественно, что вам понадобятся 1-2 "канареечных" пода.
