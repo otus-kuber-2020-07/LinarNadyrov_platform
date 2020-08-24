@@ -77,6 +77,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingressnginx/maste
 #### ⭐ | Canary для Ingress - НЕ ВЫПОЛНЕНО 
 Реализуйте канареечное развертывание с помощью ingress-nginx:
 - Перенаправление части трафика на выделенную группу подов должно происходить по HTTP-заголовку.
+
 Документация [тут](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#canary)
 - Естественно, что вам понадобятся 1-2 "канареечных" пода.
 - Написанные манифесты положите в подкаталог ./canary
