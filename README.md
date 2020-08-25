@@ -1,7 +1,8 @@
 ## Инфраструктурная платформа на основе Kubernetes
+### 1. CLI утилита kubectl для управления kubernetes.
 [Полезные команды](cli/README.md)
 
-### 1. Kubernetes-intro
+### 2. Kubernetes-intro
 ### Задание: 
 - Разберитесь почему все pod в namespace kube-system восстановились после удаления. Укажите причину в описании PR.Hint: core-dns и, например, kube-apiserver, имеют различия в механизме запуска и восстанавливаются по разным причинам. 
 - ⭐ Выясните причину, по которой pod frontend находится в статусе **Error**
@@ -15,7 +16,7 @@
 - [Kubeadm](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/create-cluster-kubeadm/)
 - [Описание выполненного ДЗ](kubernetes-intro/README.md)
 
-### 2. Kubernetes-controllers
+### 3. Kubernetes-controllers
 ### Задание:
 - Руководствуясь материалами лекции опишите произошедшую ситуацию, почему обновление ReplicaSet не повлекло обновление запущенных pod?
 - ⭐ Deployment | С использованием параметров **maxSurge** и **maxUnavailable** самостоятельно реализуйте два следующих сценария развертывания:
@@ -43,7 +44,7 @@
 - [Taints and Toleration](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/#concepts)
 - [Описание выполненного ДЗ](kubernetes-controllers/README.md)
 
-### 3. Kubernetes-security
+### 4. Kubernetes-security
 ### Задание:
 - Создание ServiceAccount
 - Создание Namespaces
@@ -54,5 +55,20 @@
 - [Понимаем RBAC в Kubernetes](https://habr.com/ru/company/flant/blog/422801/)
 - [RBAC в Kubernetes](https://rtfm.co.ua/kubernetes-znakomstvo-chast-5-rbac-avtorizaciya-i-primery-role-i-rolebinding/#Kubernetes_RBAC_%E2%80%94_%D0%BF%D1%80%D0%B8%D0%BC%D0%B5%D1%80)
 
+### 5. Kubernetes-networks
+### Задание: 
+- Добавление проверок для Pod с помощью readinessProbe и livenessProbe
+- Создание объекта Deployment с шаблоном конфигурации Pod, исправление readinessProbe = 8000 и replicas = 3, добавление RollingUpdate.
+- Создание объекта Service. Включение IPVS. 
+- Установка MetalLB. 
+- DNS через MetalLB. 
+- Создание Ingress
+- Ingress для Dashboard
+- Canary для Ingress
 
-
+#### Полезные ссылки 
+- [Описание выполненного ДЗ](kubernetes-networks/README.md)
+- [Настройка Liveness, Readiness и Startup проб](https://kubernetes.io/ru/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/)
+- [Kubernetes Services and Iptables](https://msazure.club/kubernetes-services-and-iptables/)
+- [Bare-metal considerations](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
+- [Canary для Ingress](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#canary)

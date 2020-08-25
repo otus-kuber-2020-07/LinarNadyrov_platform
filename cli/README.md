@@ -14,6 +14,21 @@ echo "[[ $commands[kubectl] ]] && source <(kubectl completion zsh)" >> ~/.zshrc
 ```
 [Шпаргалка по kubectl](https://kubernetes.io/ru/docs/reference/kubectl/cheatsheet/)
 
+##### Основы
+```bash
+kubectl cluster-info         - Показывает информацию о Kubernetes master
+kubectl get node             - Показывает информацию о НОДах 
+kubectl get node -o wide     - Показывает расширенную информацию о НОДах
+kubectl get pods             - Показывает информацию о pod'aх'
+kubectl get pods -o wide     - Показывает расширенную информацию о pod'aх' (видем на какой НОДе запущен pod)
+gcloud compute ssh NAME node - Покдючаемся к нужной НОДе (работает только в GCP)
+
+kubectl describe node gke-kubia-85f6-node-0rrx - Показывает подробную информации об объекте
+```
+##### За процессом можно понаблюдать с помощью 
+```
+kubectl get events --watch
+```
 ##### Применяем указанный манифест + смотрим какие шаги в данный момент происходят
 ```
 kubectl apply -f paymentservice-deployment.yaml | kubectl get pods -l app=paymentservice -w
@@ -49,16 +64,9 @@ kubectl top pods --all-namespaces -l tier=control-plane --sort-by=cpu
 kubectl top nodes --sort-by=cpu 
 kubectl get pods --all-namespaces --show-labels
 ```
-Команды:
-```bash
-kubectl cluster-info - Показывает информацию о Kubernetes master
-kubectl get node     - Показывает информацию о НОДах 
-kubectl get node -o wide - Показывает расширенную информацию о НОДах
-kubectl get pods - Показывает информацию о pod'aх'
-kubectl get pods -o wide - Показывает расширенную информацию о pod'aх' (видем на какой НОДе запущен pod)
-gcloud compute ssh NAME node - Покдючаемся к нужной НОДе
-
-kubectl describe node gke-kubia-85f6-node-0rrx - Показывает подробную информации об объекте
+##### Смотрим какие есть Service
+```
+kubectl get service
 ```
 ----
 
