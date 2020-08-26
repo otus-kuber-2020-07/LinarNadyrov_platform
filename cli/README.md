@@ -25,6 +25,28 @@ gcloud compute ssh NAME node - Покдючаемся к нужной НОДе (
 
 kubectl describe node gke-kubia-85f6-node-0rrx - Показывает подробную информации об объекте
 ```
+##### Формирует yaml файл через CLI 
+```
+create ns ns2 --dry-run -o yaml
+```
+##### Запрос получения RoleBinding для всего namespaces 
+```
+kubectl get rolebinding --all-namespaces
+```
+##### Запрос получения Role для определенного namespaces 
+```
+kubectl get role -n kube-system
+```
+##### Запрос получения ClusterRoles
+```
+kubectl get clusterroles
+kubectl get clusterroles | grep "admin"
+```
+##### Создание и удаление labels 
+```
+kubectl label node <nodename> <labelname>=allow  - create labels for the nodes
+kubectl label node <nodename> <labelname>-       - delete above labels from its respecitve nodes
+```
 ##### За процессом можно понаблюдать с помощью 
 ```
 kubectl get events --watch
