@@ -28,4 +28,4 @@ kubectl describe <resource> <resource_name>
 
 #### ⭐ В конфигурации нашего StatefulSet данные указаны в открытом виде, что не безопасно. Поместите данные в secrets и настройте конфигурацию на их использование.
 - файл secret.yaml
-- + исравленынй файл minio-statefulset.yaml
+- плюс исравленный файл minio-statefulset.yaml
