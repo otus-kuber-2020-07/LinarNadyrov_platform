@@ -10,7 +10,7 @@
 kind create cluster
 export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
 ```
-#### В этом ДЗ мы развернем StatefulSet c [MinIO](https://min.io/) - локальным S3 хранилищем
+#### В этом ДЗ мы развернем StatefulSet c [minIO](https://min.io/) - локальным S3 хранилищем
 minio-statefulset.yaml
 В результате применения конфигурации должно произойти следующее:
 - Запуститься под с MinIO

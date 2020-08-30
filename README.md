@@ -75,7 +75,7 @@
 
 ### 6. Kubernetes-volume
 ### Задание: 
-- Запуск kind. Разварачивание StatefulSet c [MinIO](https://min.io/).
+- Запуск kind. Разварачивание StatefulSet c [minIO](https://min.io/).
 - Работа с Secrets. 
 
 #### Полезные ссылки
@@ -85,3 +85,10 @@
 - [Создание сервиса для открытия доступа к приложению](https://kubernetes.io/ru/docs/tutorials/kubernetes-basics/expose/expose-intro/)
 - [Connecting Applications with Services](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
 - [Метки и селекторы](https://kubernetes.io/ru/docs/concepts/overview/working-with-objects/labels/)
+
+### 7. Kubernetes-templating
+### Задание: 
+- 
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-templating/README.md)
