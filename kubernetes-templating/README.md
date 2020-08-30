@@ -38,6 +38,7 @@ gcloud container clusters delete homework-7 --zone us-central1-a
 
 Устанавливаем helm. После устанавливаем готовые Helm charts.
 - nginx-ingress 
+
 Создадим namespace и release nginx-ingress
 ```
 kubectl create ns nginx-ingress

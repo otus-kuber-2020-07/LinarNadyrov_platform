@@ -1,0 +1,45 @@
+ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      kubernetes.io/tls-acme: "true"
+      cert-manager.io/cluster-issuer: "ClusterIssuer-staging"
+      cert-manager.io/acme-challenge-type: http01
+    hosts:
+      - name: chartmuseum.34.123.228.5.nip.io
+        path: /
+        tls: true
+        tlsSecret: chartmuseum.34.123.228.5.nip.io
+
+
+# original file string 248 - https://github.com/helm/charts/blob/master/stable/chartmuseum/values.yaml
+## Ingress for load balancer
+#ingress:
+#    enabled: false
+  ## Chartmuseum Ingress labels
+  ##
+  #   labels:
+  #     dns: "route53"
+  
+  ## Chartmuseum Ingress annotations
+  ##
+  #   annotations:
+  #     kubernetes.io/ingress.class: nginx
+  #     kubernetes.io/tls-acme: "true"
+  
+  ## Chartmuseum Ingress hostnames
+  ## Must be provided if Ingress is enabled
+  ##
+  #  hosts:
+  #    - name: chartmuseum.domain1.com
+  #      path: /
+  #      tls: false
+  #    - name: chartmuseum.domain2.com
+  #      path: /
+  #
+  #      ## Set this to true in order to enable TLS on the ingress record
+  #      tls: true
+  #
+  #      ## If TLS is set to true, you must declare what secret will store the key/certificate for TLS
+  #      ## Secrets must be added manually to the namespace
+  #  
