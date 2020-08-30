@@ -72,3 +72,16 @@
 - [Kubernetes Services and Iptables](https://msazure.club/kubernetes-services-and-iptables/)
 - [Bare-metal considerations](https://kubernetes.github.io/ingress-nginx/deploy/baremetal/)
 - [Canary для Ingress](https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#canary)
+
+### 6. Kubernetes-volume
+### Задание: 
+- Запуск kind. Разварачивание StatefulSet c [MinIO](https://min.io/).
+- Работа с Secrets. 
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-volumes/README.md)
+- [StatefulSet Basics](https://kubernetes.io/docs/tutorials/stateful-application/basic-stateful-set/)
+- [Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [Создание сервиса для открытия доступа к приложению](https://kubernetes.io/ru/docs/tutorials/kubernetes-basics/expose/expose-intro/)
+- [Connecting Applications with Services](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
+- [Метки и селекторы](https://kubernetes.io/ru/docs/concepts/overview/working-with-objects/labels/)
