@@ -88,7 +88,9 @@
 
 ### 7. Kubernetes-templating
 ### Задание: 
+- Создаем кластер k8s в GCP. Настраиваем рабочее окружение. 
 - 
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-templating/README.md)
+- Команды в [GCP](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create)
