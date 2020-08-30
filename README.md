@@ -89,7 +89,10 @@
 ### 7. Kubernetes-templating
 ### Задание: 
 - Создаем кластер k8s в GCP. Настраиваем рабочее окружение. 
-- 
+- Создаем сервис nginx-ingress
+- Создаем сервис cert-manager
+- Создаем сервис chartmuseum
+- Создаем сервис harbor
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-templating/README.md)

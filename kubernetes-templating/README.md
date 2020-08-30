@@ -13,11 +13,11 @@
 
 Создаем k8s: 
 ```
-gcloud container clusters create homework-7 --num-nodes 1 --zone us-central1-a --machine-type e2-micro
+gcloud container clusters create homework-7 --num-nodes 1 --zone us-central1-a --machine-type e2-medium
 ```
 Написано, создай кластер k8s с именем c одной worker НОДой в таком регионе с конфигурацией машин из e2-micro (самые дешевые машины, так как используют ЦП на основе доступности)
 
-После чего смотрим: 
+После чего смотрим:
 ```
 kubectl get node -o wide
 NAME                                  STATUS   ROLES    AGE     VERSION          INTERNAL-IP   EXTERNAL-IP    OS-IMAGE                             KERNEL-VERSION   CONTAINER-RUNTIME
@@ -28,4 +28,20 @@ gke-otus-default-pool-ed20e05d-ljp4   Ready    <none>   6m47s   v1.15.12-gke.2  
 ```
 gcloud container clusters delete homework-7 --zone us-central1-a
 ```
+### Устанавливаем готовые Helm charts. Будем работать со следующими сервисами:
+- [nginx-ingress](https://github.com/helm/charts/tree/master/stable/nginx-ingress) сервис, обеспечивающий доступ к публичным ресурсам кластера (переехал [сюда](https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-helm/))
+- [cert-manager](https://github.com/jetstack/cert-manager/tree/master/deploy/charts/cert-manager) сервис, позволяющий динамически генерировать Let's Encrypt сертификаты для ingress ресурсов
+
+Обязательно к чтению данную [документацию](https://cert-manager.io/docs/installation/kubernetes/). Как нужно настраивать [ACME](https://cert-manager.io/docs/configuration/acme/)
+- [chartmuseum](https://github.com/helm/charts/tree/master/stable/chartmuseum) специализированный репозиторий для хранения helm charts
+- [harbor](https://github.com/goharbor/harbor-helm) хранилище артефактов общего назначения (Docker Registry),поддерживающее helm charts
+
+Устанавливаем helm. После устанавливаем готовые Helm charts.
+- nginx-ingress 
+Создадим namespace и release nginx-ingress
+```
+kubectl create ns nginx-ingress
+helm upgrade --install nginx-ingress stable/nginx-ingress --wait --namespace=nginx-ingress -version=1.41.3
+```
+
 
