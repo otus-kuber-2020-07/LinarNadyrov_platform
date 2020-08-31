@@ -85,6 +85,7 @@
 - [Создание сервиса для открытия доступа к приложению](https://kubernetes.io/ru/docs/tutorials/kubernetes-basics/expose/expose-intro/)
 - [Connecting Applications with Services](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
 - [Метки и селекторы](https://kubernetes.io/ru/docs/concepts/overview/working-with-objects/labels/)
+- [Учебные примеры](https://github.com/shamshev/otus/tree/master/k8s-2020-07/volumes)
 
 ### 7. Kubernetes-templating
 ### Задание: 
@@ -97,3 +98,4 @@
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-templating/README.md)
 - Команды в [GCP](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create)
+- [Красивая настройка VScode](https://raw.githubusercontent.com/Jasstkn/.dotfiles/master/.zshrc)
