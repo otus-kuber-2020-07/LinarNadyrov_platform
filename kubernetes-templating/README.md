@@ -68,6 +68,7 @@ helm install \
 Файл values.yaml включает в себя:
 - Создание ingress ресурса с корректным hosts.name (должен использоваться nginx-ingress)
 - Автоматическую генерацию Let's Encrypt сертификата
+
 Установим chartmuseum:
 ```
 kubectl create ns chartmuseum
