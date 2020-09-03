@@ -59,5 +59,42 @@ helm install \
 ```
 Для корректной работы реализован манифест - [letsencrypt-production.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/cert-manager/letsencrypt-production.yaml)
 
+### chartmuseum
+Кастомизируем установку chartmuseum
 
+
+Реализуем [values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/chartmuseum/values.yaml) на основе [ориганального файла](https://github.com/helm/charts/blob/master/stable/chartmuseum/values.yaml)
+
+Файл values.yaml включает в себя:
+- Создание ingress ресурса с корректным hosts.name (должен использоваться nginx-ingress)
+- Автоматическую генерацию Let's Encrypt сертификата
+Установим chartmuseum:
+```
+kubectl create ns chartmuseum
+helm upgrade --install chartmuseum stable/chartmuseum --wait \
+--namespace=chartmuseum \
+--version=2.13.2 \
+-f kubernetes-templating/chartmuseum/values.yaml
+
+Проверим, что release chartmuseum установился:
+helm ls -n chartmuseum
+```
+Критерий успешности установки: 
+- Chartmuseum доступен по URL https://chartmuseum.DOMAIN
+- Сертификат для данного URL валиден
+
+### Установите harbor в кластер с использованием helm3
+Для этого: 
+- Реализуем файл [values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/harbor/values.yaml)
+- 
+```
+helm repo add harbor https://helm.goharbor.io
+helm repo update
+kubectl create ns harbor
+helm upgrade --install harbor harbor/harbor --wait \
+--namespace=harbor \
+--version=1.1.2 \
+-f kubernetes-templating/harbor/values.yaml
+```
+Реквизиты по умолчанию: admin/Harbor12345
 
