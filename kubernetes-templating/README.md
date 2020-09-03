@@ -87,7 +87,7 @@ helm ls -n chartmuseum
 ### Установите harbor в кластер с использованием helm3
 Для этого: 
 - Реализуем файл [values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/harbor/values.yaml)
-- 
+- Установил harbor:
 ```
 helm repo add harbor https://helm.goharbor.io
 helm repo update
