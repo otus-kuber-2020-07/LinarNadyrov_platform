@@ -42,7 +42,7 @@ gcloud container clusters delete homework-7 --zone us-central1-a
 Создадим namespace и release nginx-ingress
 ```
 kubectl create ns nginx-ingress
-helm upgrade --install nginx-ingress stable/nginx-ingress --wait --namespace=nginx-ingress -version=1.41.3
+helm upgrade --install nginx-ingress stable/nginx-ingress --wait --namespace=nginx-ingress --version=1.41.3
 ```
 ### cert-manager
 Добавим репозиторий: 
@@ -51,7 +51,8 @@ helm repo add jetstack https://charts.jetstack.io
 ```
 Установим cert-manager:
 ```
-helm install \
+kubectl create ns cert-manager
+helm upgrade --install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
   --version v0.16.0 \
@@ -61,7 +62,6 @@ helm install \
 
 ### chartmuseum
 Кастомизируем установку chartmuseum
-
 
 Реализуем [values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/chartmuseum/values.yaml) на основе [ориганального файла](https://github.com/helm/charts/blob/master/stable/chartmuseum/values.yaml)
 
