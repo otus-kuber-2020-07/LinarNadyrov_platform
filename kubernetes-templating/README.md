@@ -44,5 +44,20 @@ gcloud container clusters delete homework-7 --zone us-central1-a
 kubectl create ns nginx-ingress
 helm upgrade --install nginx-ingress stable/nginx-ingress --wait --namespace=nginx-ingress -version=1.41.3
 ```
+### cert-manager
+Добавим репозиторий: 
+```
+helm repo add jetstack https://charts.jetstack.io
+```
+Установим cert-manager:
+```
+helm install \
+  cert-manager jetstack/cert-manager \
+  --namespace cert-manager \
+  --version v0.16.0 \
+  --set installCRDs=true
+```
+Для корректной работы реализован манифест - [letsencrypt-production.yaml]()
+
 
 

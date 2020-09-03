@@ -3,14 +3,13 @@ ingress:
     annotations:
       kubernetes.io/ingress.class: nginx
       kubernetes.io/tls-acme: "true"
-      cert-manager.io/cluster-issuer: "ClusterIssuer-staging"
+      cert-manager.io/cluster-issuer: "letsencrypt-production"
       cert-manager.io/acme-challenge-type: http01
     hosts:
-      - name: chartmuseum.34.123.228.5.nip.io
+      - name: chartmuseum.itbegin.ru
         path: /
         tls: true
-        tlsSecret: chartmuseum.34.123.228.5.nip.io
-
+        tlsSecret: chartmuseum.itbegin.ru
 
 # original file string 248 - https://github.com/helm/charts/blob/master/stable/chartmuseum/values.yaml
 ## Ingress for load balancer
