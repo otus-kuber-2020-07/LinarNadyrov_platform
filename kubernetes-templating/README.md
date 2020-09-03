@@ -99,3 +99,6 @@ helm upgrade --install harbor harbor/harbor --wait \
 ```
 Реквизиты по умолчанию: admin/Harbor12345
 
+Критерий успешности установки: 
+- Chartmuseum доступен по URL https://harbor.DOMAIN
+- Сертификат для данного URL валиден
