@@ -57,7 +57,7 @@ helm install \
   --version v0.16.0 \
   --set installCRDs=true
 ```
-Для корректной работы реализован манифест - [letsencrypt-production.yaml]()
+Для корректной работы реализован манифест - [letsencrypt-production.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-templating/kubernetes-templating/cert-manager/letsencrypt-production.yaml)
 
 
 
