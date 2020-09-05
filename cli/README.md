@@ -90,6 +90,14 @@ kubectl get pods --all-namespaces --show-labels
 ```
 kubectl get service
 ```
+
+##### Работа с сертификатами
+```
+kubectl get certificate -A 
+kubectl get certificaterequests
+kubectl get certificatesigningrequests
+kubectl delete certificate -n harbor harbor-harbor-ingress 
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
