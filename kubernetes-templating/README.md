@@ -186,3 +186,10 @@ helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespa
 helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespace
 hipster-shop --set frontend.service.NodePort=31234
 ```
+
+⭐ Выберите сервисы, которые можно установить как зависимости, используя community chart's. Например, это может быть Redis. Реализуйте их установку через Chart.yaml и обеспечьте сохранение работоспособности приложения.
+- Убираем redis из hister-shop/templates/all-hipster-shop.yaml
+- Создаем ```helm create redis```
+- Добавляем зависимости hister-shop/Chart.yaml и обновляем эти зависимости ```helm dep update kubernetes-templating/hipster-shop```
+- В директории kubernetes-templating/hipster-shop/charts должен появится архив redis-****
+- Обновляем release hipster-shop ```helm upgrade --install hipster-shop hipster-shop --namespace hipster-shop```
