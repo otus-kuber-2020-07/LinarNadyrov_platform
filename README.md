@@ -94,10 +94,11 @@
 - Создаем сервис cert-manager
 - Создаем сервис chartmuseum
 - Создаем сервис harbor
+- Создаем свой helm chart
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-templating/README.md)
 - Команды в [GCP](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create)
 - [Красивая настройка VScode](https://raw.githubusercontent.com/Jasstkn/.dotfiles/master/.zshrc)
 - [ChartMuseum](https://github.com/helm/chartmuseum), репозиторий в [github](https://github.com/helm/charts/tree/master/stable/chartmuseum)
-- 
+- [Helm list](https://helm.sh/docs/helm/helm_list/)
