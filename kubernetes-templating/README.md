@@ -102,3 +102,87 @@ helm upgrade --install harbor harbor/harbor --wait \
 Критерий успешности установки: 
 - Chartmuseum доступен по URL https://harbor.DOMAIN
 - Сертификат для данного URL валиден
+
+Обратите внимание, как helm3 хранит информацию о release:
+```
+kubectl get secrets -n harbor -l owner=helm
+```
+### Создаем свой helm chart
+#### Типичная жизненная ситуация:
+- У вас есть приложение, которое готово к запуску в Kubernetes
+- У вас есть манифесты для этого приложения, но вам надо запускать его на разных окружениях с разными параметрами
+#### Возможные варианты решения:
+- Написать разные манифесты для разных окружений
+- Использовать "костыли" - sed, envsubst, etc...
+- Использовать полноценное решение для шаблонизации (helm, etc...)
+
+#### Мы рассмотрим третий вариант. Возьмем готовые манифесты и подготовим их к релизу на разные окружения.
+Использовать будем демо-приложение [hipster-shop](https://github.com/GoogleCloudPlatform/microservices-demo), представляющее собой типичный набор микросервисов.
+
+Стандартными средствами helm инициализируйте структуру директории с содержимым будущего helm chart
+```
+helm create kubernetes-templating/hipster-shop
+```
+Мы будем создавать chart для приложения с нуля, поэтому удалите values.yaml и содержимое templates. После этого перенесите файл all-hipster-shop.yaml в директорию templates.
+
+В целом, helm chart уже готов, вы можете попробовать установить его:
+```
+kubectl create ns hipster-shop
+helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespace hipster-shop
+```
+
+Сейчас наш helm chart hipster-shop совсем не похож на настоящий. При этом, все микросервисы устанавливаются из одного файла all-hipstershop.yaml
+
+Давайте исправим это и первым делом займемся микросервисом frontend. Скорее всего он разрабатывается отдельной командой, а исходный код хранится в отдельном репозитории.
+
+Создадим заготовку:
+```
+helm create kubernetes-templating/frontend
+```
+Аналогично чарту hipster-shop удалите файл values.yaml и файлы в директории templates, создаваемые по умолчанию. 
+Выделим из файла all-hipster-shop.yaml манифесты для установки микросервиса frontend. В директории templates чарта frontend создайте файлы: 
+- deployment.yaml, service.yaml, ingress.yaml
+
+После того, как вынесете описание deployment и service для frontend из файла all-hipster-shop.yaml переустановите chart hipster-shop и проверьте, что доступ к UI пропал и таких ресурсов больше нет.
+
+Установите chart frontend в namespace hipster-shop и проверьте что доступ к UI вновь появился:
+```
+helm upgrade --install frontend kubernetes-templating/frontend --namespace hipster-shop
+```
+
+#### Пришло время минимально шаблонизировать наш chart frontend
+- выносим данные в переменную (смотри файл values.yaml)
+
+Теперь наш frontend стал немного похож на настоящий helm chart. Не стоит забывать, что он все еще является частью одного большого микросервисного приложения hipster-shop. Поэтому было бы неплохо включить его в зависимости этого
+приложения.
+
+Для начала, удалите release frontend из кластера:
+```
+helm list -a -A
+helm delete frontend -n hipster-shop
+```
+
+В Helm 3 список зависимостей рекомендуют объявлять в файле Chart.yaml
+
+Добавьте chart frontend как зависимость
+```
+dependencies:
+  - name: frontend
+    version: 0.1.0
+    repository: "file://../frontend" - ссылается на /frontend
+```
+Обновим зависимости:
+```
+helm dep update kubernetes-templating/hipster-shop
+```
+В директории kubernetes-templating/hipster-shop/charts появился архив frontend-0.1.0.tgz содержащий chart frontend определенной версии и добавленный в chart hipster-shop как зависимость. Обновите release hipster-shop и убедитесь, что ресурсы frontend вновь созданы.
+```
+helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespace hipster-shop
+```
+## Таким образом мы можем микросервисное приложение выносить в отдельную разработку и добавлять при необходмости
+
+Осталось понять, как из CI-системы мы можем менять параметры helm chart, описанные в values.yaml. Для этого существует специальный ключ --set. Изменим NodePort для frontend в release, не меняя его в самом chart:
+```
+helm upgrade --install hipster-shop kubernetes-templating/hipster-shop --namespace
+hipster-shop --set frontend.service.NodePort=31234
+```

@@ -27,3 +27,5 @@ trivy:
 
 notary:
   enabled: false
+
+# original document - https://github.com/goharbor/harbor-helm/blob/master/values.yaml 
