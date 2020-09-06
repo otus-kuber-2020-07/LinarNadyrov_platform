@@ -34,4 +34,4 @@ kubectl -n monitoring port-forward --address 0.0.0.0 pod/prometheus-grafana-5558
 ```
 
 ##### Получаются красивые изображения
-<img src="/images/granafa_nginx.png" alt="granafa_nginx"/>
+<img src="./images/granafa_nginx.png" alt="granafa_nginx"/>
