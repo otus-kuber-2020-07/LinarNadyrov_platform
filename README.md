@@ -5,7 +5,7 @@
 ### 2. Kubernetes-intro
 ### Задание: 
 - Разберитесь почему все pod в namespace kube-system восстановились после удаления. Укажите причину в описании PR.Hint: core-dns и, например, kube-apiserver, имеют различия в механизме запуска и восстанавливаются по разным причинам. 
-- ⭐ Выясните причину, по которой pod frontend находится в статусе **Error**
+-   Выясните причину, по которой pod frontend находится в статусе **Error**
 
 #### Полезные ссылки
 
@@ -75,7 +75,7 @@
 
 ### 6. Kubernetes-volume
 ### Задание: 
-- Запуск kind. Разварачивание StatefulSet c [MinIO](https://min.io/).
+- Запуск kind. Разварачивание StatefulSet c [minIO](https://min.io/).
 - Работа с Secrets. 
 
 #### Полезные ссылки
@@ -85,3 +85,21 @@
 - [Создание сервиса для открытия доступа к приложению](https://kubernetes.io/ru/docs/tutorials/kubernetes-basics/expose/expose-intro/)
 - [Connecting Applications with Services](https://kubernetes.io/docs/concepts/services-networking/connect-applications-service/)
 - [Метки и селекторы](https://kubernetes.io/ru/docs/concepts/overview/working-with-objects/labels/)
+- [Учебные примеры](https://github.com/shamshev/otus/tree/master/k8s-2020-07/volumes)
+
+### 7. Kubernetes-templating
+### Задание: 
+- Создаем кластер k8s в GCP. Настраиваем рабочее окружение. 
+- Создаем сервис nginx-ingress
+- Создаем сервис cert-manager
+- Создаем сервис chartmuseum
+- Создаем сервис harbor
+- Создаем свой helm chart
+- ⭐Создаем свой helm chart которое можно установить как зависимость
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-templating/README.md)
+- Команды в [GCP](https://cloud.google.com/sdk/gcloud/reference/container/clusters/create)
+- [Красивая настройка VScode](https://raw.githubusercontent.com/Jasstkn/.dotfiles/master/.zshrc)
+- [ChartMuseum](https://github.com/helm/chartmuseum), репозиторий в [github](https://github.com/helm/charts/tree/master/stable/chartmuseum)
+- [Helm list](https://helm.sh/docs/helm/helm_list/)

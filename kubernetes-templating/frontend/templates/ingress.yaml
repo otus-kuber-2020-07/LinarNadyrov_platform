@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+    name: frontend
+    annotations:
+        kubernetes.io/ingress.class: "nginx"
+        kubernetes.io/tls-acme: "true"
+        cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+    tls:
+    - hosts:
+      - {{ .Values.ingress.hosts }}
+      secretName: {{ .Values.ingress.hosts }}
+    rules:
+    - host: {{ .Values.ingress.hosts }}
+      http:
+        paths:
+        - path: /
+          backend:
+            serviceName: {{ .Values.ingress.serviceName }}
+            servicePort: {{ .Values.ingress.servicePort }}
