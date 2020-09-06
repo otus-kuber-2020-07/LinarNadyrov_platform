@@ -103,3 +103,17 @@
 - [Красивая настройка VScode](https://raw.githubusercontent.com/Jasstkn/.dotfiles/master/.zshrc)
 - [ChartMuseum](https://github.com/helm/chartmuseum), репозиторий в [github](https://github.com/helm/charts/tree/master/stable/chartmuseum)
 - [Helm list](https://helm.sh/docs/helm/helm_list/)
+
+### 8. Kubernetes-operators
+### Задание:
+
+
+### 9. Kubernetes-monitoring
+### Задание:
+- Cоздать кастомный образ nginx
+- Установить и настроить [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator#:~:text=Overview,monitoring%20stack%20for%20Kubernetes%20clusters.)
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-monitoring/README.md)
+- [kube-prometheus](https://hub.helm.sh/charts/choerodon/kube-prometheus) (или по другому prometheus-operator)
+- Что такое [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
