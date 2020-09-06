@@ -110,10 +110,10 @@
 
 ### 9. Kubernetes-monitoring
 ### Задание:
-- Cоздать кастомный образ nginx
-- Установить и настроить [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator#:~:text=Overview,monitoring%20stack%20for%20Kubernetes%20clusters.)
+- Cоздать кастомный образ nginx с nginx-exporter и запускаем его.
+- Установить и настроить [prometheus-operator](https://github.com/prometheus-operator/prometheus-operator#:~:text=Overview,monitoring%20stack%20for%20Kubernetes%20clusters.).
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-monitoring/README.md)
-- [kube-prometheus](https://hub.helm.sh/charts/choerodon/kube-prometheus) (или по другому prometheus-operator)
+- [kube-prometheus](https://hub.helm.sh/charts/choerodon/kube-prometheus) (или по другому **prometheus-operator**)
 - Что такое [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
