@@ -32,3 +32,6 @@ kubectl apply -f ServiceMonitor.yaml
 kubectl -n monitoring port-forward --address 0.0.0.0 pod/prometheus-prometheus-kube-prometheus-prometheus-0 9090:9090
 kubectl -n monitoring port-forward --address 0.0.0.0 pod/prometheus-grafana-5558455c66-9qw5l 3000:3000
 ```
+
+##### Получаются красивые изображения
+<img src="/images/granafa_nginx.png" alt="granafa_nginx"/>
