@@ -29,6 +29,10 @@ kubectl describe node gke-kubia-85f6-node-0rrx - Показывает подро
 ```
 create ns ns2 --dry-run -o yaml
 ```
+### Формирует yaml файл для запущенного Service
+```
+kubectl get -n monitoring service/prometheus-grafana -o yaml
+```
 ##### Запрос получения RoleBinding для всего namespaces 
 ```
 kubectl get rolebinding --all-namespaces
