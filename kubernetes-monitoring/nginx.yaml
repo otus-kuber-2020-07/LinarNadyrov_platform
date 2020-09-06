@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  namespace: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: app
+        image: nginx
+        ports:
+          - name: nginx
+            containerPort: 80
+        volumeMounts:
+          - name: config
+            mountPath: /etc/nginx/conf.d
+      - name: nginx-exporter
+        image: nginx/nginx-prometheus-exporter
+        args: ['-nginx.scrape-uri', 'http://localhost:80/basic_status']
+        ports:
+          - name: metrics
+            containerPort: 9113
+      volumes:
+        - name: config
+          configMap:
+            # Provide the name of the ConfigMap containing the files you want
+            # to add to the container
+            name: config-nginx
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-nginx
+  namespace: nginx
+  labels:
+    app: nginx
+data:
+  config.conf: |
+    server {
+      listen       80;
+      listen  [::]:80;
+      server_name  localhost;
+      location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+        }
+      error_page   500 502 503 504  /50x.html;
+      location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+      location = /basic_status {
+        stub_status;
+        }
+    }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  namespace: nginx
+  labels:
+    app: nginx
+spec:
+  type: ClusterIP
+  selector:
+    app: nginx
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+    - name: metrics
+      protocol: TCP
+      port: 9113
