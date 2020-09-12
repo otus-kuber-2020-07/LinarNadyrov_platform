@@ -47,4 +47,21 @@ kubectl get pods -n microservices-demo -o wide
 ```
 helm repo add elastic https://helm.elastic.co
 ```
-Запустим каждую реплику ElasticSearch на своей, выделенной ноде из infra-pool. Создадим файл [elasticsearch.values.yaml]
+Запустим каждую реплику ElasticSearch на своей, выделенной ноде из infra-pool. Создадим файл [elasticsearch.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/elasticsearch.values.yaml), будем указывать в этом файле нужные нам values.
+
+
+Обратимся к файлу values.yaml в [репозитории](https://github.com/elastic/helm-charts/tree/master/elasticsearch) и найдем там ключ tolerations. Мы помним, что ноды из infra-pool имеют taint node-role=infra:NoSchedule. Давайте разрешим
+ElasticSearch запускаться на данных нодах. Для этого внесем данные в файл [elasticsearch.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/elasticsearch.values.yaml)
+
+```
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+```
+Установим elasticsearch:
+```
+kubectl create ns observability
+helm upgrade --install elasticsearch elastic/elasticsearch --namespace observability -f elasticsearch.values.yaml
+```
