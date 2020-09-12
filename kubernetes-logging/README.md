@@ -100,7 +100,7 @@ elasticsearch-master-2   1/1     Running   0          59m   10.44.1.2   gke-logg
 kubectl create ns nginx-ingress
 helm upgrade --install nginx-ingress stable/nginx-ingress --namespace=nginx-ingress --version=1.41.3 -f nginx-ingress.values.yaml
 ```
-После установки получил 
+### ingress-controller установился, но получил такое сообщение:  
 *******************************************************************************************************
 * DEPRECATED, please use https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx *
 *******************************************************************************************************
