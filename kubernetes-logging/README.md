@@ -104,4 +104,46 @@ helm upgrade --install nginx-ingress stable/nginx-ingress --namespace=nginx-ingr
 *******************************************************************************************************
 * DEPRECATED, please use https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx *
 *******************************************************************************************************
+При инсталляции ставится ``` deployment.apps/nginx-ingress-default-backend ``` из за этого ставится 4 nginx-ingress (условию задачи это не противоречит - три реплики controller, из за этого капать не стал)
+```
+kubectl get all -n nginx-ingress                                                  
+NAME                                                 READY   STATUS    RESTARTS   AGE
+pod/nginx-ingress-controller-844dcddcc-2cm75         1/1     Running   0          55m
+pod/nginx-ingress-controller-844dcddcc-72gbs         1/1     Running   0          55m
+pod/nginx-ingress-controller-844dcddcc-9wstl         1/1     Running   0          55m
+pod/nginx-ingress-default-backend-674d599c48-kdmwp   1/1     Running   0          15s
 
+NAME                                    TYPE           CLUSTER-IP      EXTERNAL-IP    PORT(S)                      AGE
+service/nginx-ingress-controller        LoadBalancer   10.47.251.139   34.82.206.35   80:30160/TCP,443:30126/TCP   55m
+service/nginx-ingress-default-backend   ClusterIP      10.47.250.154   <none>         80/TCP                       55m
+
+NAME                                            READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/nginx-ingress-controller        3/3     3            3           55m
+deployment.apps/nginx-ingress-default-backend   1/1     1            1           55m
+
+NAME                                                       DESIRED   CURRENT   READY   AGE
+replicaset.apps/nginx-ingress-controller-844dcddcc         3         3         3       55m
+replicaset.apps/nginx-ingress-default-backend-674d599c48   1         1         1       55m
+```
+
+#### Установка EFK стека | Kibana
+Создадим файл [kibana.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/kibana.values.yaml) и добавим туда конфигурацию для создания ingress: 
+```
+ingress:
+  enabled: true
+  annotations: {
+    kubernetes.io/ingress.class: nginx
+  }
+  path: /
+  hosts:
+    - kibana.34.82.206.35.xip.io
+```
+
+Обновим релиз:
+```
+helm upgrade --install kibana elastic/kibana --namespace observability -f kibana.values.yaml
+```
+После прохождения всех предыдущих шагов у вас должен появиться доступ к Kibana по URL kibana.<YOUR_IP>.xip.io
+Попробуем создать index pattern, и увидим, что в ElasticSearch пока что не обнаружено никаких данных:
+
+<img src="./images/EFK.png" alt="EFK-стек"/>
