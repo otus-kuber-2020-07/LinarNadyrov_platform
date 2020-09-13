@@ -148,7 +148,7 @@ helm upgrade --install kibana elastic/kibana --namespace observability -f kibana
 
 <img src="./images/EFK.png" alt="EFK-стек"/>
 
-За отправку логов отвечает Fluent Bit). Создадим файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) и добавим туда: 
+За отправку логов отвечает Fluent Bit. Создадим файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) и добавим туда: 
 ```
 backend:
   type: es
@@ -189,4 +189,10 @@ rawConfig: |
     Match  *
     Remove time
     Remove @timestamp
+```
+
+Проверим результат: 
+```
+helm upgrade --install fluent-bit stable/fluent-bit --namespace observability -f fluent-bit.values.yaml
+kubectl logs fluent-bit-hcrqm -n observability --tail 2
 ```
