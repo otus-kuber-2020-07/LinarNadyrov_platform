@@ -172,7 +172,7 @@ GitHub [issue](https://github.com/fluent/fluent-bit/issues/628), с более �
 
 Для решения проблемы мы пойдем сложным путем и воспользуемся фильтром [Modify](https://docs.fluentbit.io/manual/pipeline/filters/modify), который позволит удалить из логов "лишние" ключи. 
 
-Добабим в файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) следующие данные: 
+Добавим в файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) следующие данные: 
 ```
 backend:
   type: es
@@ -196,3 +196,17 @@ rawConfig: |
 helm upgrade --install fluent-bit stable/fluent-bit --namespace observability -f fluent-bit.values.yaml
 kubectl logs fluent-bit-hcrqm -n observability --tail 2
 ```
+#### Мониторинг ElasticSearch
+Для мониторинга ElasticSearch будем использовать Prometheus exporter.
+
+Создадим файл [prometheus-operator.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/prometheus-operator.values.yaml) и установим prometheus-operator в namespace observability: 
+```
+helm upgrade --install prometheus choerodon/kube-prometheus -n observability -f prometheus-operator.values.yaml
+```
+
+Установим Prometheus exporter:
+```
+helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --set es.uri=http://elasticsearch-master:9200 --set serviceMonitor.enabled=true --namespace=observability
+```
+
+Импортируйте в Grafana один из популярных [Dashboard](https://grafana.com/grafana/dashboards/4358) для ElasticSearch exporter, содержащий визуализацию основных собираемых метрик. 

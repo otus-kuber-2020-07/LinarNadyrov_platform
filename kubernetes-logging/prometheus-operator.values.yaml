@@ -1,0 +1,43 @@
+commonLabels:
+  prometheus: default
+
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
+
+grafana:
+  enabled: true
+
+  defaultDashboardsEnabled: true
+
+  adminPassword: password
+
+  ingress:
+    enabled: true
+    annotations: {
+      kubernetes.io/ingress.class: nginx
+    }
+    path: /
+    hosts:
+      - grafana.34.82.206.35.xip.io
+
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false
+    #podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorNamespaceSelector: {}
+
+  ingress:
+    enabled: true
+    annotations: {
+      kubernetes.io/ingress.class: nginx
+    }
+    path: /
+    hosts:
+      - prometheus.34.82.206.35.xip.io
