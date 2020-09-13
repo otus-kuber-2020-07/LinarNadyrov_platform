@@ -1,14 +1,14 @@
 commonLabels:
   prometheus: default
 
-tolerations:
-  - key: node-role
-    operator: Equal
-    value: infra
-    effect: NoSchedule
+# tolerations:
+#   - key: node-role
+#     operator: Equal
+#     value: infra
+#     effect: NoSchedule
 
-nodeSelector:
-  cloud.google.com/gke-nodepool: infra-pool
+# nodeSelector:
+#   cloud.google.com/gke-nodepool: infra-pool
 
 grafana:
   enabled: true
@@ -24,7 +24,7 @@ grafana:
     }
     path: /
     hosts:
-      - grafana.34.82.206.35.xip.io
+      - grafana.34.78.44.16.xip.io
 
 prometheus:
   prometheusSpec:
@@ -40,4 +40,4 @@ prometheus:
     }
     path: /
     hosts:
-      - prometheus.34.82.206.35.xip.io
+      - prometheus.34.78.44.16.xip.io

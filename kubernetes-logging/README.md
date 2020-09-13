@@ -13,17 +13,17 @@ gcloud compute zones list
 Создаем k8s: 
 ```
 gcloud container clusters create logging-hw --num-nodes 1 \
-    --zone us-west1-a --machine-type n1-standard-2 \
+    --zone europe-west1-b --machine-type n1-standard-2 \
     --disk-size=50GB --no-enable-stackdriver-kubernetes
 ``` 
 Добавляем pool и node-taints в существующий k8s: 
 ```
-gcloud container node-pools create infra-pool --cluster logging-hw --zone us-west1-a --num-nodes 3 --machine-type n1-standard-2 --disk-size=50GB --node-taints node-role=infra:NoSchedule
+gcloud container node-pools create infra-pool --cluster logging-hw --zone europe-west1-b --num-nodes 4 --machine-type n1-standard-2 --disk-size=50GB --node-taints node-role=infra:NoSchedule
 ```
 
 Удаляем k8s
 ```
-gcloud container clusters delete logging-hw --zone us-west1-a
+gcloud container clusters delete logging-hw --zone europe-west1-b
 ```
 В результате должна получиться следующая конфигурация кластера:
 ```
@@ -210,3 +210,5 @@ helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --se
 ```
 
 Импортируйте в Grafana один из популярных [Dashboard](https://grafana.com/grafana/dashboards/4358) для ElasticSearch exporter, содержащий визуализацию основных собираемых метрик. 
+
+<img src="./images/Grafana.png" alt="Grafana-dashboards"/>
