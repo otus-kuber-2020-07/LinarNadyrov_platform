@@ -147,3 +147,46 @@ helm upgrade --install kibana elastic/kibana --namespace observability -f kibana
 Попробуем создать index pattern, и увидим, что в ElasticSearch пока что не обнаружено никаких данных:
 
 <img src="./images/EFK.png" alt="EFK-стек"/>
+
+За отправку логов отвечает Fluent Bit). Создадим файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) и добавим туда: 
+```
+backend:
+  type: es
+  es:
+    host: elasticsearch-master
+```
+Установим/обновим релиз:
+```
+helm upgrade --install fluent-bit stable/fluent-bit --namespace observability -f fluent-bit.values.yaml
+```
+Лог файл можно посмотреть: 
+```
+kubectl get pods -A -o wide | grep "flue" 
+kubectl logs fluent-bit-wp6zt -n observability --tail 2
+```
+Попробуем повторно создать index pattern. В этот раз ситуация изменилась, и какие-то индексы в ElasticSearch уже есть. 
+
+После установки можно заметить, что в ElasticSearch попадают далеко не все логи нашего приложения. Причину можно найти в логах pod с Fluent Bit, он пытается обработать JSON, отдаваемый приложением, и находит там дублирующиеся поля time и timestamp. 
+
+GitHub [issue](https://github.com/fluent/fluent-bit/issues/628), с более подробным описанием проблемы
+
+Для решения проблемы мы пойдем сложным путем и воспользуемся фильтром [Modify](https://docs.fluentbit.io/manual/pipeline/filters/modify), который позволит удалить из логов "лишние" ключи. 
+
+Добабим в файл [fluent-bit.values.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/fluent-bit.values.yaml) следующие данные: 
+```
+backend:
+  type: es
+  es:
+    host: elasticsearch-master
+rawConfig: |
+  @INCLUDE fluent-bit-service.conf
+  @INCLUDE fluent-bit-input.conf
+  @INCLUDE fluent-bit-filter.conf
+  @INCLUDE fluent-bit-output.conf
+
+  [FILTER]
+    Name   modify
+    Match  *
+    Remove time
+    Remove @timestamp
+```
