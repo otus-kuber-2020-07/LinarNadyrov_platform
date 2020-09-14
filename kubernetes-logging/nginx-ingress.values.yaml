@@ -1,6 +1,14 @@
 controller:
   replicaCount: 3
 
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: "nginx-ingress"
+      namespaceSelector: {}
+      scrapeInterval: 30s
+
   tolerations:
     - key: node-role
       operator: Equal
