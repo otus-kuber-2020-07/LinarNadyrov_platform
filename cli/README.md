@@ -102,6 +102,18 @@ kubectl get certificaterequests
 kubectl get certificatesigningrequests
 kubectl delete certificate -n harbor harbor-harbor-ingress 
 ```
+##### Хорошая дока, правда unofficial-kubernetes
+[kube-controller-manager](https://unofficial-kubernetes.readthedocs.io/en/latest/admin/kube-controller-manager/)
+
+##### Выбор лидера в системе/управлении Kubernetes. Leader election in Kubernetes control plane
+```
+kubectl get endpoints - конечная точка основного ресурса
+or 
+kubectl get ep
+
+kubectl get endpoints -n kube-system                      - смотрим endpoints
+kubectl describe endpoints kube-scheduler -n kube-system  - смотрим leader
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
