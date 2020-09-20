@@ -4,5 +4,13 @@ tolerations:
     value: infra
     effect: NoSchedule
 
+replicas: 2
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi
+  requests:
+    cpu: 30m
+
 nodeSelector:
   cloud.google.com/gke-nodepool: infra-pool

@@ -1,3 +1,17 @@
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
+
 ingress:
   enabled: true
   annotations: {

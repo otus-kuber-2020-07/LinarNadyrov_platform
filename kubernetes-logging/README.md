@@ -1,7 +1,9 @@
 #### Выполненное Д/З №10
 
+ - [x] Установил EFK и Grafana
  - [x] Самостоятельное задание | Установка nginx-ingress
- - []
+ - [x] Установил nginx ingress
+ - [x] Настроил node exporters
 
 #### Для выполнения домашнего задания понадобится подготовка Kubernetes кластера:
 Мы планируем отдать три из четырех нод кластера под инфраструктурные сервисы. Присвоим этим нодам определенный [Taints](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/), чтобы избежать запуска на них случайных pod. Укажем следующую конфигурацию taint через web-интерфейс GCP: node-role=infra:NoSchedule (я буду назначать все через CLI).

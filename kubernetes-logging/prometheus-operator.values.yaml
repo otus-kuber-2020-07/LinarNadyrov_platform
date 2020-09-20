@@ -1,20 +1,15 @@
-commonLabels:
-  prometheus: default
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
 
-# tolerations:
-#   - key: node-role
-#     operator: Equal
-#     value: infra
-#     effect: NoSchedule
-
-# nodeSelector:
-#   cloud.google.com/gke-nodepool: infra-pool
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
 
 grafana:
   enabled: true
-
   defaultDashboardsEnabled: true
-
   adminPassword: password
 
   ingress:
