@@ -122,6 +122,7 @@
 ### Задание:
 - Установить EFK stack
 - Создать dashboard в kibana
+- Мониторинг ElasticSearch
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-logging/README.md)
@@ -132,3 +133,6 @@
 - [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx)
 - [Elasticsearch Helm Chart](https://github.com/elastic/helm-charts/tree/master/elasticsearch)
 - [fluent-bit github](https://github.com/helm/charts/blob/master/stable/fluent-bit/values.yaml) и [fluent-bit official](https://fluentbit.io/documentation/0.13/output/elasticsearch.html)
+- [PDB](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
+- [Больше метрик в Elasticsearch](https://habr.com/ru/company/yamoney/blog/358550/)
+- [Log format Nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/log-format/) и [тут](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#log-format-escape-json)
