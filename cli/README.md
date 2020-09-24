@@ -114,6 +114,11 @@ kubectl get ep
 kubectl get endpoints -n kube-system                      - смотрим endpoints
 kubectl describe endpoints kube-scheduler -n kube-system  - смотрим leader
 ```
+##### Удаляем все pods с нужного ns | Удаляем весь deployments с нужного ns
+```
+kubectl delete --all pods --namespace=foo
+kubectl delete --all deployments --namespace=foo
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.

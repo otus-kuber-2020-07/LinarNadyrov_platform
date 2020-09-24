@@ -20,7 +20,7 @@ gcloud container clusters create logging-hw --num-nodes 1 \
 ``` 
 Добавляем pool и node-taints в существующий k8s: 
 ```
-gcloud container node-pools create infra-pool --cluster logging-hw --zone europe-west1-b --num-nodes 4 --machine-type n1-standard-2 --disk-size=50GB --node-taints node-role=infra:NoSchedule
+gcloud container node-pools create infra-pool --cluster logging-hw --zone europe-west1-b --num-nodes 3 --machine-type n1-standard-2 --disk-size=50GB --node-taints node-role=infra:NoSchedule
 ```
 
 Удаляем k8s

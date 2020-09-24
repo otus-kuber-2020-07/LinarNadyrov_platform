@@ -19,7 +19,7 @@ grafana:
     }
     path: /
     hosts:
-      - grafana.34.78.44.16.xip.io
+      - grafana.34.77.128.116.xip.io
 
 prometheus:
   prometheusSpec:
@@ -35,4 +35,4 @@ prometheus:
     }
     path: /
     hosts:
-      - prometheus.34.78.44.16.xip.io
+      - prometheus.34.77.128.116.xip.io
