@@ -235,6 +235,7 @@ helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --se
 - 500+ 
 
 Файл [export.ndjson](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/export.ndjson) (экспортированный из kibana). Очень крутая штука :-) 
+
 ----
 ----
 
