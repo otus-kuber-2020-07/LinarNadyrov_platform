@@ -225,4 +225,58 @@ helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --se
 **unassigned_shards** - количество shard, для которых не нашлось подходящей ноды, их наличие сигнализирует о проблемах
 **jvm_memory_usage** - высокая загрузка (в процентах от выделенной памяти) может привести к замедлению работы кластера
 **number_of_pending_tasks** - количество задач, ожидающих выполнения. Значение метрики, отличное от нуля, может сигнализировать о наличии проблем внутри кластера
+----
 
+
+#### Как запустить данную ДЗ (выполняется пошагово)
+Создаем k8s: 
+```
+gcloud container clusters create logging-hw --num-nodes 1 \
+    --zone europe-west1-b --machine-type n1-standard-2 \
+    --disk-size=50GB --no-enable-stackdriver-kubernetes
+``` 
+Добавляем pool и node-taints в существующий k8s: 
+```
+gcloud container node-pools create infra-pool --cluster logging-hw --zone europe-west1-b --num-nodes 3 --machine-type n1-standard-2 --disk-size=50GB --node-taints node-role=infra:NoSchedule
+```
+
+Установим elasticsearch:
+```
+kubectl create ns observability
+helm upgrade --install elasticsearch elastic/elasticsearch --namespace observability -f elasticsearch.values.yaml
+```
+Установим fluent-bit:
+```
+helm upgrade --install fluent-bit stable/fluent-bit --namespace observability -f fluent-bit.values.yaml
+```
+
+Установим prometheus-operator в namespace observability: 
+```
+helm upgrade --install prometheus choerodon/kube-prometheus -n observability -f prometheus-operator.values.yaml
+```
+
+Установим Prometheus exporter:
+```
+helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --set es.uri=http://elasticsearch-master:9200 --set serviceMonitor.enabled=true --namespace=observability
+```
+
+Установите nginx-ingress:
+```
+kubectl create ns nginx-ingress
+helm upgrade --install nginx-ingress stable/nginx-ingress --namespace=nginx-ingress --version=1.41.3 -f nginx-ingress.values.yaml
+```
+
+Обновим prometheus-operator
+```
+helm upgrade --install prometheus choerodon/kube-prometheus -n observability -f prometheus-operator.values.yaml
+```
+Обновим elasticsearch:
+```
+helm upgrade --install elasticsearch elastic/elasticsearch --namespace observability -f elasticsearch.values.yaml
+```
+
+Установите kibana:
+```
+helm upgrade --install kibana elastic/kibana --namespace observability -f kibana.values.yaml
+```
+----

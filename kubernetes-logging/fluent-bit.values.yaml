@@ -1,3 +1,9 @@
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
 backend:
   type: es
   es:
