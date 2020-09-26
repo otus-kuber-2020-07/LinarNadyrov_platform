@@ -290,4 +290,8 @@ helm upgrade --install elasticsearch elastic/elasticsearch --namespace observabi
 ```
 helm upgrade --install kibana elastic/kibana --namespace observability -f kibana.values.yaml
 ```
+Удаляем k8s
+```
+gcloud container clusters delete logging-hw --zone europe-west1-b
+```
 ----
