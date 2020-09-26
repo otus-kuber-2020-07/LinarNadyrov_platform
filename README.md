@@ -123,6 +123,7 @@
 - Установить EFK stack
 - Создать dashboard в kibana
 - Мониторинг ElasticSearch
+- Визуализация в kibana (вкладка Visualize с типом TSVB)  
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-logging/README.md)
