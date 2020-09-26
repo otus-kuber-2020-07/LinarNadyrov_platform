@@ -4,6 +4,7 @@
  - [x] Самостоятельное задание | Установка nginx-ingress
  - [x] Установил nginx ingress
  - [x] Настроил node exporters
+ - [x] Реализовал визуализацию в kibana (вкладка Visualize с типом TSVB)  
 
 #### Для выполнения домашнего задания понадобится подготовка Kubernetes кластера:
 Мы планируем отдать три из четырех нод кластера под инфраструктурные сервисы. Присвоим этим нодам определенный [Taints](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/), чтобы избежать запуска на них случайных pod. Укажем следующую конфигурацию taint через web-интерфейс GCP: node-role=infra:NoSchedule (я буду назначать все через CLI).
@@ -232,7 +233,6 @@ helm upgrade --install elasticsearch-exporter stable/elasticsearch-exporter --se
 - 300-399
 - 400-499
 - 500+
-
 Файл [export.ndjson](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-logging/kubernetes-logging/export.ndjson) (экспортированный из kibana). Очень крутая штука :-) 
 ----
 ----
