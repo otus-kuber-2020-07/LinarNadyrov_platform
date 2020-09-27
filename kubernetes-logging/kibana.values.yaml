@@ -1,0 +1,22 @@
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+resources:
+  limits:
+    cpu: "1"
+    memory: 2Gi
+
+nodeSelector:
+  cloud.google.com/gke-nodepool: infra-pool
+
+ingress:
+  enabled: true
+  annotations: {
+    kubernetes.io/ingress.class: nginx
+  }
+  path: /
+  hosts:
+    - kibana.34.77.128.116.xip.io

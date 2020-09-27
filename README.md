@@ -117,3 +117,23 @@
 - [Описание выполненного ДЗ](kubernetes-monitoring/README.md)
 - [kube-prometheus](https://hub.helm.sh/charts/choerodon/kube-prometheus) (или по другому **prometheus-operator**)
 - Что такое [Prometheus Operator](https://github.com/prometheus-operator/prometheus-operator/blob/master/Documentation/user-guides/getting-started.md)
+
+### 10. Kubernetes-logging
+### Задание:
+- Установить EFK stack
+- Создать dashboard в kibana
+- Мониторинг ElasticSearch
+- Визуализация в kibana (вкладка Visualize с типом TSVB)  
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-logging/README.md)
+- [Создание node-pools в GCP](https://cloud.google.com/sdk/gcloud/reference/container/node-pools/create)
+- [Добавление node-pools в GCP](https://cloud.google.com/kubernetes-engine/docs/how-to/node-pools#gcloud_2)
+- [Информация про Taint](https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#taint)
+- [nodeAffinity](https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/)
+- [kubernetes/ingress-nginx](https://github.com/kubernetes/ingress-nginx/tree/master/charts/ingress-nginx)
+- [Elasticsearch Helm Chart](https://github.com/elastic/helm-charts/tree/master/elasticsearch)
+- [fluent-bit github](https://github.com/helm/charts/blob/master/stable/fluent-bit/values.yaml) и [fluent-bit official](https://fluentbit.io/documentation/0.13/output/elasticsearch.html)
+- [PDB](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
+- [Больше метрик в Elasticsearch](https://habr.com/ru/company/yamoney/blog/358550/)
+- [Log format Nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/log-format/) и [тут](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#log-format-escape-json)
