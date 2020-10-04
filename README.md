@@ -137,3 +137,11 @@
 - [PDB](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
 - [Больше метрик в Elasticsearch](https://habr.com/ru/company/yamoney/blog/358550/)
 - [Log format Nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/log-format/) и [тут](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#log-format-escape-json)
+
+### 15. Kubernetes-GitOps
+### Задание:
+- В качестве хранилища кода и CI-системы в этом домашнем задании мы будем использовать SaaS [GitLab](https://gitlab.com/LinarNadyrov/microservices-demo)
+
+#### Полезные ссылки
+- 
+- 
