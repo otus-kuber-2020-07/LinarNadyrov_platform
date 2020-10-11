@@ -141,8 +141,10 @@
 ### 15. Kubernetes-GitOps
 ### Задание:
 - В качестве хранилища кода и CI-системы в этом домашнем задании мы будем использовать SaaS [GitLab](https://gitlab.com/LinarNadyrov/microservices-demo)
+- Автоматизируйте создание Kubernetes кластера с помощью GitLab 
 
 #### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-gitops/README.md)
 - https://github.com/Avtandilko/microservices-demo-1
 - https://github.com/otus-kuber-2020-04/Tennki_platform/tree/kubernetes-gitops
 - https://gitlab.com/Tennki/microservices-demo/-/tree/master/
