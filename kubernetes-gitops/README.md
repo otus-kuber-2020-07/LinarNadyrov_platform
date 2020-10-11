@@ -4,8 +4,9 @@
 - Инфраструктурный код и файл .gitlab-ci.yaml поместите в отдельный репозиторий и приложите ссылку на данный репозиторий в PR
 
 Для автоматизации было сделано: 
-- создана, настроена виртуальная машина и подключена как runner в gitlab 
-Сам файл [.gitlab-ci.yaml]()
+- создана, настроена виртуальная машина и подключена как runner в gitlab. 
+
+Сам файл [.gitlab-ci.yaml](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-gitops/kubernetes-gitops/.gitlab-ci.yml)
 ```
 before_script:
   - df -h
