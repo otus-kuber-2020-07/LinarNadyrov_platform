@@ -145,6 +145,9 @@
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-gitops/README.md)
+- [fluxcd](https://github.com/fluxcd/helm-operator-get-started)
+- 
+- 
 - https://github.com/Avtandilko/microservices-demo-1
 - https://github.com/otus-kuber-2020-04/Tennki_platform/tree/kubernetes-gitops
 - https://gitlab.com/Tennki/microservices-demo/-/tree/master/
