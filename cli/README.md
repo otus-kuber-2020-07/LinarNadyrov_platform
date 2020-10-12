@@ -119,6 +119,13 @@ kubectl describe endpoints kube-scheduler -n kube-system  - смотрим leade
 kubectl delete --all pods --namespace=foo
 kubectl delete --all deployments --namespace=foo
 ```
+
+##### Смотрим, что HelmRelease для микросервиса frontend появился в кластере
+```
+kubectl get helmrelease -n microservices-demo    - показывает успешность релиза
+helm list -n microservices-demo                  - дополнительно можно таким образом посмотреть
+helm history frontend -n microservices-demo      - смотрим история
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
