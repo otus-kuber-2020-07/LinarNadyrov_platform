@@ -61,10 +61,10 @@ fluxctl identity --k8s-fwd-ns flux
 │   ├── namespaces
 │   │   ├── namespaces.yaml
 ```
-Результат можно проверить через лога pod с flux и через kubectl get ns - должны увидеть новый ns. 
+Результат можно проверить через лог pod с flux и через kubectl get ns - должны увидеть новый ns. 
 
 ##### HelmRelease
-Создаем и дописываем нужные параметры в этом [файле](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-gitops/kubernetes-gitops/.gitlab-ci.yml)
+Создаем и дописываем нужные параметры в этом [файле](https://gitlab.com/LinarNadyrov/microservices-demo/-/blob/master/deploy/releases/frontend.yaml)
 ```
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
@@ -114,3 +114,38 @@ tag: v0.0.1
 
 3. Helm chart, используемый для развертывания релиза. В нашем случае указываем git-репозиторий, и директорию с чартом внутри него.
 4. Переопределяем переменные Helm chart. В дальнейшем Flux может сам переписывать эти значения и делать commit в git-репозиторий (например, изменять тег Docker образа при его обновлении в Registry)
+
+##### Смотрим, что HelmRelease для микросервиса frontend появился в кластере
+```
+kubectl get helmrelease -n microservices-demo    - показывает успешность релиза
+helm list -n microservices-demo                  - дополнительно можно таким образом посмотреть
+helm history frontend -n microservices-demo      - смотрим история
+```
+Можно инициировать синхронизацию вручную
+```
+fluxctl --k8s-fwd-ns flux sync
+```
+Обновление образа
+- Внесите изменения в исходный код микросервиса frontend (не имеет значения, какие) и пересоберите образ, при этом инкрементировав версию тега (до v0.0.2)
+- Дождитесь автоматического обновления релиза в Kubernetes кластере (для просмотра ревизий релиза можно использовать команду helm
+history frontend -n microservices-demo )
+- Проверьте, изменилось ли что-либо в git-репозитории (в частности, в файле deploy/releases/frontend.yaml )
+```
+helm history frontend -n microservices-demo
+REVISION	UPDATED                 	STATUS    	CHART          	APP VERSION	DESCRIPTION     
+1       	Mon Oct 12 10:10:57 2020	superseded	frontend-0.21.0	1.16.0     	Install complete
+2       	Mon Oct 12 10:21:21 2020	deployed  	frontend-0.21.0	1.16.0     	Upgrade complete
+```
+для PR
+```
+ts=2020-10-12T10:53:17.592863632Z caller=release.go:79 component=release release=frontend targetNamespace=microservices-demo resource=microservices-demo:helmrelease/frontend helmVersion=v3 info="starting sync run"
+ts=2020-10-12T10:53:17.957844168Z caller=release.go:353 component=release release=frontend targetNamespace=microservices-demo resource=microservices-demo:helmrelease/frontend helmVersion=v3 info="running upgrade" action=upgrade
+ts=2020-10-12T10:53:18.001977035Z caller=helm.go:69 component=helm version=v3 info="preparing upgrade for frontend" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.007413208Z caller=helm.go:69 component=helm version=v3 info="resetting values to the chart's original version" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.269994608Z caller=helm.go:69 component=helm version=v3 info="performing update for frontend" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.335937104Z caller=helm.go:69 component=helm version=v3 info="creating upgraded release for frontend" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.34588903Z caller=helm.go:69 component=helm version=v3 info="checking 1 resources for changes" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.354244147Z caller=helm.go:69 component=helm version=v3 info="Looks like there are no changes for Deployment \"frontend\"" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.363187657Z caller=helm.go:69 component=helm version=v3 info="updating status for upgraded release for frontend" targetNamespace=microservices-demo release=frontend
+ts=2020-10-12T10:53:18.396955717Z caller=release.go:364 component=release release=frontend targetNamespace=microservices-demo resource=microservices-demo:helmrelease/frontend helmVersion=v3 info="upgrade succeeded" revision=883b3033c919ffafbf11362981f307379d7e8d37 phase=upgrade
+```
