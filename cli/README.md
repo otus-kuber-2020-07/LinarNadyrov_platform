@@ -128,6 +128,31 @@ helm history frontend -n microservices-demo      - смотрим история
 ```
 ----
 
+##### Быстрый просмотр спецификаций ресурсов
+Когда вы создаете определения ресурсов YAML, нужно знать поля и их значение для этих ресурсов.
+
+Эти значения можно посмотреть
+```
+kubectl explain resource[.field]...
+
+kubectl explain deployment
+kubectl explain deployment.spec
+```
+##### Если вы не знаете точно, какие именно ресурсы нужны, то можете отобразить их все следующей командой 
+```
+kubectl api-resources
+```
+##### Все нижеследующие команды равнозначны
+```
+kubectl explain deployments.spec
+# или
+kubectl explain deployment.spec
+# или        
+kubectl explain deploy.spec
+```
+
+----
+
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
 1. Первым делом нужно ознакомиться:\
 https://cloud.google.com/kubernetes-engine/docs/quickstart#cloud-shell
@@ -169,3 +194,4 @@ gcloud compute firewall-rules create kubia --allow tcp:8080 --target-tags=k8s --
 ```bash
 kubectl scale replicasets.apps kubia --replicas=3
 ```
+
