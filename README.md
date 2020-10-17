@@ -147,7 +147,7 @@
 - [Описание выполненного ДЗ](kubernetes-gitops/README.md)
 - [fluxcd](https://github.com/fluxcd/helm-operator-get-started)
 - [Официальная документация Flux](https://docs.fluxcd.io/en/1.21.0/)
-- 
+- [Canary Custom Resource](https://docs.flagger.app/usage/how-it-works#canary-custom-resource)
 - https://github.com/Avtandilko/microservices-demo-1
 - https://github.com/otus-kuber-2020-04/Tennki_platform/tree/kubernetes-gitops
 - https://gitlab.com/Tennki/microservices-demo/-/tree/master/
