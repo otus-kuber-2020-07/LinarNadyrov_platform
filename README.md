@@ -141,14 +141,14 @@
 ### 15. Kubernetes-GitOps
 ### Задание:
 - В качестве хранилища кода и CI-системы в этом домашнем задании мы будем использовать SaaS [GitLab](https://gitlab.com/LinarNadyrov/microservices-demo)
-- Автоматизируйте создание Kubernetes кластера с помощью GitLab 
+- Автоматизируем создание Kubernetes кластера с помощью GitLab
+- GitOps с помощью интумента Flux
+- Canary deployments с Flagger и Istio (мне было тяжеловато)
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-gitops/README.md)
 - [fluxcd](https://github.com/fluxcd/helm-operator-get-started)
 - [Официальная документация Flux](https://docs.fluxcd.io/en/1.21.0/)
 - [Canary Custom Resource](https://docs.flagger.app/usage/how-it-works#canary-custom-resource)
-- https://github.com/Avtandilko/microservices-demo-1
-- https://github.com/otus-kuber-2020-04/Tennki_platform/tree/kubernetes-gitops
-- https://gitlab.com/Tennki/microservices-demo/-/tree/master/
-
+- [Terraform Provider для Helm](https://github.com/hashicorp/terraform-provider-helm)
+- [Argo CD](https://argoproj.github.io/)
