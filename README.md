@@ -142,7 +142,7 @@
 ### Задание:
 - В качестве хранилища кода и CI-системы в этом домашнем задании мы будем использовать SaaS [GitLab](https://gitlab.com/LinarNadyrov/microservices-demo)
 - Автоматизируем создание Kubernetes кластера с помощью GitLab
-- GitOps с помощью интумента Flux
+- GitOps с помощью инструмента Flux
 - Canary deployments с Flagger и Istio (мне было тяжеловато)
 
 #### Полезные ссылки
