@@ -152,3 +152,7 @@
 - [Canary Custom Resource](https://docs.flagger.app/usage/how-it-works#canary-custom-resource)
 - [Terraform Provider для Helm](https://github.com/hashicorp/terraform-provider-helm)
 - [Argo CD](https://argoproj.github.io/)
+- [Документация Flux](https://docs.fluxcd.io/en/stable/)
+- [Документация Helm-Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/index.html)
+- [Документация Flagger](https://docs.flagger.app/tutorials/istio-progressive-delivery)
+- [Документация Istio](https://istio.io/latest/docs/)
