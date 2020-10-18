@@ -149,3 +149,68 @@ ts=2020-10-12T10:53:18.354244147Z caller=helm.go:69 component=helm version=v3 in
 ts=2020-10-12T10:53:18.363187657Z caller=helm.go:69 component=helm version=v3 info="updating status for upgraded release for frontend" targetNamespace=microservices-demo release=frontend
 ts=2020-10-12T10:53:18.396955717Z caller=release.go:364 component=release release=frontend targetNamespace=microservices-demo resource=microservices-demo:helmrelease/frontend helmVersion=v3 info="upgrade succeeded" revision=883b3033c919ffafbf11362981f307379d7e8d37 phase=upgrade
 ```
+
+##### Canary deployments с Flagger и Istio
+Установка Flagger
+```
+helm repo add flagger https://flagger.app
+kubectl apply -f https://raw.githubusercontent.com/weaveworks/flagger/master/artifacts/flagger/crd.yaml
+
+helm upgrade --install flagger flagger/flagger \
+--namespace=istio-system \
+--set crd.create=false \
+--set meshProvider=istio \
+--set metricsServer=http://prometheus:9090
+```
+Измените созданное ранее описание namespace microservices-demo (добавляем labels)
+```
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: microservices-demo
+  labels:
+    istio-injection: enabled
+```
+После синхронизации проверку можно выполнить командой
+```
+kubectl get ns microservices-demo --show-labels
+```
+Самый простой способ добавить sidecar контейнер в уже запущенные pod - удалить их
+```
+kubectl delete pods --all -n microservices-demo
+```
+Проверка 
+```
+kubectl get pods -n microservices-demo
+NAME                                READY   STATUS    RESTARTS   AGE
+frontend-primary-6cfbc69b94-79pk8   2/2     Running   0          35m
+```
+Добавляем Istio Gateway и VirtualService [frontend-gw.yaml/frontend-vs.yaml](https://gitlab.com/LinarNadyrov/microservices-demo/-/tree/master/deploy/charts/frontend/templates) для сервиса frontend.
+
+Добавляем ресурс canary [canary.yaml](https://gitlab.com/LinarNadyrov/microservices-demo/-/tree/master/deploy/charts/frontend/templates) для сервиса frontend.
+
+Проверим, что Flagger:
+
+Успешно инициализировал canary ресурс frontend: 
+```
+kubectl get canary -n microservices-demo
+NAME       STATUS        WEIGHT   LASTTRANSITIONTIME
+frontend   Initialized   0        2020-10-18T13:45:34Z
+```
+Обновил pod, добавив ему к названию постфикс primary:
+```
+kubectl get pods -n microservices-demo -l app=frontend-primary
+NAME                                READY   STATUS    RESTARTS   AGE
+frontend-primary-6cfbc69b94-79pk8   2/2     Running   0          59m
+```
+Выполняем canary deploy сервиса frontend.
+```
+Events:
+  Type    Reason  Age   From     Message
+  ----    ------  ----  ----     -------
+  Normal  Synced  60m   flagger  Initialization done! frontend.microservices-demo
+
+kubectl get canaries -n microservices-demo frontend
+NAME       STATUS      WEIGHT   LASTTRANSITIONTIME
+frontend   Succeeded   0        2020-10-18T14:15:17Z
+```
