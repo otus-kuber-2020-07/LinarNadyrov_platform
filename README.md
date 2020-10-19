@@ -137,3 +137,22 @@
 - [PDB](https://kubernetes.io/docs/tasks/run-application/configure-pdb/)
 - [Больше метрик в Elasticsearch](https://habr.com/ru/company/yamoney/blog/358550/)
 - [Log format Nginx](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/log-format/) и [тут](https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/#log-format-escape-json)
+
+### 15. Kubernetes-GitOps
+### Задание:
+- В качестве хранилища кода и CI-системы в этом домашнем задании мы будем использовать SaaS [GitLab](https://gitlab.com/LinarNadyrov/microservices-demo)
+- Автоматизируем создание Kubernetes кластера с помощью GitLab
+- GitOps с помощью инструмента Flux
+- Canary deployments с Flagger и Istio (мне было тяжеловато)
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-gitops/README.md)
+- [fluxcd](https://github.com/fluxcd/helm-operator-get-started)
+- [Официальная документация Flux](https://docs.fluxcd.io/en/1.21.0/)
+- [Canary Custom Resource](https://docs.flagger.app/usage/how-it-works#canary-custom-resource)
+- [Terraform Provider для Helm](https://github.com/hashicorp/terraform-provider-helm)
+- [Argo CD](https://argoproj.github.io/)
+- [Документация Flux](https://docs.fluxcd.io/en/stable/)
+- [Документация Helm-Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/index.html)
+- [Документация Flagger](https://docs.flagger.app/tutorials/istio-progressive-delivery)
+- [Документация Istio](https://istio.io/latest/docs/)
