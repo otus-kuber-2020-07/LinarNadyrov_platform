@@ -156,3 +156,15 @@
 - [Документация Helm-Operator](https://docs.fluxcd.io/projects/helm-operator/en/latest/index.html)
 - [Документация Flagger](https://docs.flagger.app/tutorials/istio-progressive-delivery)
 - [Документация Istio](https://istio.io/latest/docs/)
+
+### 18. Kubernetes-vault
+### Задание:
+- Установим кластер vault в kubernetes
+- Научимся создавать секреты и политики
+- Настроим авторизацию в vault через kubernetes sa
+- Сделаем под с контейнером nginx, в который прокинем секреты из vault через consul-template
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-vault/README.md)
+- [vault](https://learn.hashicorp.com/tutorials/vault/agent-kubernetes#step-1-create-a-service-account)
+- [vault-guides](https://github.com/hashicorp/vault-guides)
