@@ -172,7 +172,7 @@ Cluster ID      ff81e604-b6ce-bc11-ad0b-b5bd25880ce4
 HA Enabled      true
 HA Cluster      https://vault-0.vault-internal:8201
 HA Mode         active
-➜  ~
+
 ➜  ~ kubectl exec -it vault-1 -- vault status
 Key                    Value
 ---                    -----
@@ -188,7 +188,7 @@ HA Enabled             true
 HA Cluster             https://vault-0.vault-internal:8201
 HA Mode                standby
 Active Node Address    http://10.44.2.6:8200
-➜  ~
+
 ➜  ~ kubectl exec -it vault-2 -- vault status
 Key                    Value
 ---                    -----
@@ -268,3 +268,5 @@ kubernetes/    kubernetes    auth_kubernetes_657da9e3    n/a
 token/         token         auth_token_14d7d5fd         token based credentials
 ```
 
+#### Создадим yaml для ClusterRoleBinding
+Файл 
