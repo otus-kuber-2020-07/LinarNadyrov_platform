@@ -386,7 +386,7 @@ cd vault-guides/identity/vault-agent-k8s-demo
 ```
 - В каталоге configs-k8s скорректируйте конфиги с учетом ранее созданых ролей и секретов
 - роверьте и скорректируйте конфиг example-k8s-spec.yml
-- Скорректированные [конфиги](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-vault/configs-k8s/) приложил к ДЗ
+- Скорректированные [конфиги](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/tree/kubernetes-vault/kubernetes-vault/configs-k8s) приложил к ДЗ
 
 
 Проверка: 
