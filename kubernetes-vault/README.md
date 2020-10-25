@@ -393,3 +393,189 @@ cd vault-guides/identity/vault-agent-k8s-demo
 - законнектится к поду nginx и вытащить оттуда index.html
 - index.html приложить к ДЗ
 
+Проверка не удачная: 
+```
+kubectl exec -it -n default nginx-container -- bash
+root@nginx-container:/#
+root@nginx-container:/#
+root@nginx-container:/# less /usr/s
+sbin/  share/ src/
+root@nginx-container:/# less /usr/share/nginx/html/
+50x.html    index.html
+root@nginx-container:/# cat /usr/share/nginx/html/index.html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
+
+#### создадим CA на базе vault
+Включим pki секретс
+```
+kubectl exec -it vault-0 -- vault secrets enable pki
+kubectl exec -it vault-0 -- vault secrets tune -max-lease-ttl=87600h pki
+
+kubectl exec -it vault-0 -- vault write -field=certificate pki/root/generate/internal \
+common_name="exmaple.ru" ttl=87600h > CA_cert.crt
+```
+пропишем урлы для ca и отозванных сертификатов
+```
+kubectl exec -it vault-0 -- vault write pki/config/urls \
+issuing_certificates="http://vault:8200/v1/pki/ca" \
+crl_distribution_points="http://vault:8200/v1/pki/crl"
+``` 
+
+создадим промежуточный сертификат
+```
+kubectl exec -it vault-0 -- vault secrets enable --path=pki_int pki
+kubectl exec -it vault-0 -- vault secrets tune -max-lease-ttl=87600h pki_int
+
+kubectl exec -it vault-0 -- vault write -format=json pki_int/intermediate/generate/internal common_name="example.ru Intermediate Authority" | jq -r '.data.csr' > pki_intermediate.csr
+```
+
+пропишем промежуточный сертификат в vault
+```
+kubectl cp pki_intermediate.csr vault-0:/home/vault/
+kubectl exec -it vault-0 -- vault write -format=json pki/root/sign-intermediate csr=@/home/vault/pki_intermediate.csr format=pem_bundle ttl=43800h | jq -r '.data.certificate' > intermediate.cert.pem
+
+kubectl cp intermediate.cert.pem vault-0:/home/vault/
+kubectl exec -it vault-0 -- vault write pki_int/intermediate/set-signed certificate=@/home/vault/intermediate.cert.pem
+```
+
+Создадим и отзовем новые сертификаты
+```
+kubectl exec -it vault-0 -- vault write pki_int/roles/example-dot-ru allowed_domains="example.ru" allow_subdomains=true max_ttl="720h"
+```
+Создадим и отзовем сертификат
+```
+kubectl exec -it vault-0 -- vault write pki_int/issue/example-dot-ru common_name="gitlab.example.ru" ttl="24h"
+
+===
+Key                 Value
+---                 -----
+ca_chain            [-----BEGIN CERTIFICATE-----
+MIIDnDCCAoSgAwIBAgIURWTXwwGk74qq8J6+9YBugrFnYBAwDQYJKoZIhvcNAQEL
+BQAwFTETMBEGA1UEAxMKZXhtYXBsZS5ydTAeFw0yMDEwMjUxNDAwMTBaFw0yNTEw
+MjQxNDAwNDBaMCwxKjAoBgNVBAMTIWV4YW1wbGUucnUgSW50ZXJtZWRpYXRlIEF1
+dGhvcml0eTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAN10aTGSzjv1
+nebE91VJVNH2E9vXrqf5re86ZKuAQRMtRp/inUnp93Pzpck5JWH9n6n65NNU7gcJ
+Z0kBHv2UYzkKUjJOSg+zvDyXqeAU+LsAUJS1u+ZlPC8ttWnjz5OfnDMp2nt0g0qK
+avUKmVyUQtUjF/XJrJ4aGzUyrgaGyKTUAT9Gk/3YgYPzxUkduJI4SkZ9aaMKMVml
+x9FGJEYJHD60+lhmXsOHLsqJK0xFHQmCY1/xYTY3AA7DAyIf58yBuDKmzubyWjfx
+iqiL90h9Zw2tnc53vZPDoA97+dM7PrY0whx77Yvk/3AUKqIV7fQ5mH9+bTLzIOTo
+Yp0RunI25mcCAwEAAaOBzDCByTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUw
+AwEB/zAdBgNVHQ4EFgQUr/p2B6aSoHi4V4rb65NbPtEi2NswHwYDVR0jBBgwFoAU
+JHxTlPSkyeDkxMaMfQmrvS6wr/4wNwYIKwYBBQUHAQEEKzApMCcGCCsGAQUFBzAC
+hhtodHRwOi8vdmF1bHQ6ODIwMC92MS9wa2kvY2EwLQYDVR0fBCYwJDAioCCgHoYc
+aHR0cDovL3ZhdWx0OjgyMDAvdjEvcGtpL2NybDANBgkqhkiG9w0BAQsFAAOCAQEA
+ZiZxolvgCgqArahQ8cGapP16krn/1D2G20ShrCgoEHpYGuFE5lJsnTK5zIjeMEO8
+umGJENQo/YG7bgNtDGJeOLOka+kaNuwVKbm5aSnX6F8H+GqKXTS42TtBCXzKn791
+rSKAqhTeNM/GJ6hu1zMtjV87Yxehc/czWv8qBPd8CkOlcUd+kZJcVFFmdcjDPTiQ
+tPjlMb/9gYcZgGREF5+m/C0Tbly0tHwUHSHoIK0I48bTdz4P9UuWPL7Ci2020k55
+0ULKTuzJqS5rcCVf5gsrkLNoUQmVzgFl092gUJcpcZr993RS8Jgnz0g4OJeEPxxy
+9mQTnG8gUUUcUyf1zxTfOw==
+-----END CERTIFICATE-----]
+certificate         -----BEGIN CERTIFICATE-----
+MIIDZzCCAk+gAwIBAgIUbOHlNLib6yUJJtmit0oMIy4fc24wDQYJKoZIhvcNAQEL
+BQAwLDEqMCgGA1UEAxMhZXhhbXBsZS5ydSBJbnRlcm1lZGlhdGUgQXV0aG9yaXR5
+MB4XDTIwMTAyNTE0MDIwMloXDTIwMTAyNjE0MDIzMlowHDEaMBgGA1UEAxMRZ2l0
+bGFiLmV4YW1wbGUucnUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDE
+LmqCjVIif5jDDDYBM838NV6tdQMPtyMV89Dju8MOZqySBS2eKWoUSAXGh9LPIlml
+UreoF0wFwUMy9d9jCZMjn4iN8nZQHowJcRch1pHoXvQepM2cc2WtIveSomHsqkzZ
+dRfh5sNvnENLJ3JoNvmK9rpVkIbN70LCBK7cGHhCiFaGH4Xxv49Hmz2FljAG9+3p
+UcC4VAJj2+xnkwSqnS1iylf7eootmceC3meiP2IgCKH8+tTPLeBervT9Zm8i219r
+NdqnpS+Lsvcjd4skv6IhBAR5hJKoxfQxsORrxRwwJ//RgTf53Dyxps1Do1xczoCw
+NQGH5hPgi8yjeNlsltivAgMBAAGjgZAwgY0wDgYDVR0PAQH/BAQDAgOoMB0GA1Ud
+JQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAdBgNVHQ4EFgQU8oizFNV3NpGRW5U5
+srtjjRic9VAwHwYDVR0jBBgwFoAUr/p2B6aSoHi4V4rb65NbPtEi2NswHAYDVR0R
+BBUwE4IRZ2l0bGFiLmV4YW1wbGUucnUwDQYJKoZIhvcNAQELBQADggEBAHvdJzKB
+BOfNARo03zE7TeIJTLPAWLVgR8ExFT1eLwsowz/MzI48ej+wRz+UnPGdMNtnETBq
+h1We8fWPp1pTfVaiG6XNzJg52gr8WHaqzi9TxIOLOgXUv4smcq7Pn6Pfe4+WCvlT
+oRCR2CM4sZB9BHeVnazzSFzpgR1qKLjErap+SOF7pMz9mpFPqRcmnv9SefgYswbx
+Fpmf4XBSOcdRZhl7eAE8UinMmo0SCjgewMjUK0RRvCOCXUU49v0CE85x6md1vtI2
+A8sk8AjLzLKAjWU9ZmU/Fo8O040bDuL/oJzjts2UB1vNDgVNfRj5lOw1aAcXMXY5
+qFGGye1kIRvw7D4=
+-----END CERTIFICATE-----
+expiration          1603720952
+issuing_ca          -----BEGIN CERTIFICATE-----
+MIIDnDCCAoSgAwIBAgIURWTXwwGk74qq8J6+9YBugrFnYBAwDQYJKoZIhvcNAQEL
+BQAwFTETMBEGA1UEAxMKZXhtYXBsZS5ydTAeFw0yMDEwMjUxNDAwMTBaFw0yNTEw
+MjQxNDAwNDBaMCwxKjAoBgNVBAMTIWV4YW1wbGUucnUgSW50ZXJtZWRpYXRlIEF1
+dGhvcml0eTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAN10aTGSzjv1
+nebE91VJVNH2E9vXrqf5re86ZKuAQRMtRp/inUnp93Pzpck5JWH9n6n65NNU7gcJ
+Z0kBHv2UYzkKUjJOSg+zvDyXqeAU+LsAUJS1u+ZlPC8ttWnjz5OfnDMp2nt0g0qK
+avUKmVyUQtUjF/XJrJ4aGzUyrgaGyKTUAT9Gk/3YgYPzxUkduJI4SkZ9aaMKMVml
+x9FGJEYJHD60+lhmXsOHLsqJK0xFHQmCY1/xYTY3AA7DAyIf58yBuDKmzubyWjfx
+iqiL90h9Zw2tnc53vZPDoA97+dM7PrY0whx77Yvk/3AUKqIV7fQ5mH9+bTLzIOTo
+Yp0RunI25mcCAwEAAaOBzDCByTAOBgNVHQ8BAf8EBAMCAQYwDwYDVR0TAQH/BAUw
+AwEB/zAdBgNVHQ4EFgQUr/p2B6aSoHi4V4rb65NbPtEi2NswHwYDVR0jBBgwFoAU
+JHxTlPSkyeDkxMaMfQmrvS6wr/4wNwYIKwYBBQUHAQEEKzApMCcGCCsGAQUFBzAC
+hhtodHRwOi8vdmF1bHQ6ODIwMC92MS9wa2kvY2EwLQYDVR0fBCYwJDAioCCgHoYc
+aHR0cDovL3ZhdWx0OjgyMDAvdjEvcGtpL2NybDANBgkqhkiG9w0BAQsFAAOCAQEA
+ZiZxolvgCgqArahQ8cGapP16krn/1D2G20ShrCgoEHpYGuFE5lJsnTK5zIjeMEO8
+umGJENQo/YG7bgNtDGJeOLOka+kaNuwVKbm5aSnX6F8H+GqKXTS42TtBCXzKn791
+rSKAqhTeNM/GJ6hu1zMtjV87Yxehc/czWv8qBPd8CkOlcUd+kZJcVFFmdcjDPTiQ
+tPjlMb/9gYcZgGREF5+m/C0Tbly0tHwUHSHoIK0I48bTdz4P9UuWPL7Ci2020k55
+0ULKTuzJqS5rcCVf5gsrkLNoUQmVzgFl092gUJcpcZr993RS8Jgnz0g4OJeEPxxy
+9mQTnG8gUUUcUyf1zxTfOw==
+-----END CERTIFICATE-----
+private_key         -----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAxC5qgo1SIn+Ywww2ATPN/DVerXUDD7cjFfPQ47vDDmaskgUt
+nilqFEgFxofSzyJZpVK3qBdMBcFDMvXfYwmTI5+IjfJ2UB6MCXEXIdaR6F70HqTN
+nHNlrSL3kqJh7KpM2XUX4ebDb5xDSydyaDb5iva6VZCGze9CwgSu3Bh4QohWhh+F
+8b+PR5s9hZYwBvft6VHAuFQCY9vsZ5MEqp0tYspX+3qKLZnHgt5noj9iIAih/PrU
+zy3gXq70/WZvIttfazXap6Uvi7L3I3eLJL+iIQQEeYSSqMX0MbDka8UcMCf/0YE3
++dw8sabNQ6NcXM6AsDUBh+YT4IvMo3jZbJbYrwIDAQABAoIBAQCThRfAfgZSPMKh
+gNAnTU5KpdNA+elIav0uJ75fUTSW4qxHzS8FbL0A7TuykzX5XiotACtsccBP34jp
+jCvjrDKBqhgkLTu8eYvyGaE8Z74mDyjg1ipqx/egHtgt4n9iWJkbOEqyKzWw+r87
+hzknlpdFYMyzRM+pkY4QmTbn+FqOI+afyO5Ojmgq/WRwhQDYoi1Tm8Yme+eMGcJ8
+bN+n5aIJsN8xBtEq645HMedyOMD1XVyo7uRINeuftVJs3NUI36LQOTiO5iighpAB
+pl/tvDZuqjhXRqLLmjFpGeoC22ZYHlDj4p2UjNdb725G9dzJgkqPeemI6edm9jEz
+4mN3XrpJAoGBAMom5ePErrrT+tfnQu0/u0vROxUo0Uqd8RuyZwU+xvycSUb88gwj
+xDatGKSQo/hUfePWU3ZY42WmMregNjlNlPU8A2KKe7jyRR17IJoUPNcmkg3vRxc8
+gng2ol9Aip2r6OfkW3SQnNj8762Z9WFj5Ki1ZQJPAh6gzxFhtSzvbyzDAoGBAPhw
+XrUlAUtB8Qgz34a3aJH14YTtH7+PWGeg29UshwIQH7k4Tv8TfMg45EG5rOR6Sj10
+ui2JsSycILKwx7QvcPCyV6TDARUHZ7UTTTwl6uN7emYyjxcp+V8XaF9Q90IW0mZG
+53NS1eK2WPlNmP694rtVCWn2vSbmjoYVY14PgRWlAoGAXGHWYXa620qQsiZPoZik
+gYuG0q6qpszzKNMo3W7JBRxvKG/kNcQKoWoNfvdS1+PU/FAwKD+K/CMtvlkLLrjT
+wBbC/T+INwcQqt5gEcn52+EWkiOte2L9xO5C2gDm2BN+BquHWAfWhhthdRaM2wsJ
+rkfnd1yf/VtEBg9++qAZUH0CgYEA2W8PlJ60iTdHSxSLV46B+O0n2XznQnKkvt2s
+SOBVsNqHyUWc7eYSWfJg450r0jOtcigNIfnWlOJ4Q6wwvGShBigwSMVa1xrKC1K/
+UBsnfrz9HSC212EnHbCQ6oskPDVZI6Z+vxIKnAdXy6m8c4ehPq9oM9N9LOSwbG2f
+sB0FrvkCgYApWf74KPAfiaQ2HEF8KjqFfIB4WmDJDWQNqAa6/pzcJeYtrLv3AElq
+RnCLs3HGlQalhyqO/61k9g7euPF5kvmQ8MQr1QazlPRGgymKPVGnGTn358GpSBen
+xZoJ0U8lj2Psfo+w2T+3mG0mJc43SsvNUI/y/VJ+YGMM7KC0f6oY8A==
+-----END RSA PRIVATE KEY-----
+private_key_type    rsa
+serial_number       6c:e1:e5:34:b8:9b:eb:25:09:26:d9:a2:b7:4a:0c:23:2e:1f:73:6e
+===
+
+kubectl exec -it vault-0 -- vault write pki_int/revoke serial_number="6c:e1:e5:34:b8:9b:eb:25:09:26:d9:a2:b7:4a:0c:23:2e:1f:73:6e"
+
+Key                        Value
+---                        -----
+revocation_time            1603634606
+revocation_time_rfc3339    2020-10-25T14:03:26.43989494Z
+
+```
