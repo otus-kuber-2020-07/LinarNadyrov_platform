@@ -150,7 +150,12 @@ kubectl explain deployment.spec
 # или        
 kubectl explain deploy.spec
 ```
+##### Смотрим сервисы и их endpoints 
+```
+kubectl get svc -A
 
+kubectl describe svc rpc-app-service
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
