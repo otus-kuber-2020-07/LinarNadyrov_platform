@@ -3,6 +3,8 @@
  
        Создать StorageClass для CSI Host Path Driver
 
+       Создать StorageClass для CSI Host Path Driver
+
        Создать объект PVC c именем `storage-pvc`
 
        Создать объект Pod c именем `storage-pod`
