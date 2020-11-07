@@ -168,3 +168,12 @@
 - [Описание выполненного ДЗ](kubernetes-vault/README.md)
 - [vault](https://learn.hashicorp.com/tutorials/vault/agent-kubernetes#step-1-create-a-service-account)
 - [vault-guides](https://github.com/hashicorp/vault-guides)
+
+### 22. Kubernetes-storage
+### Задание:
+- Установить CSI-драйвер и протестировать функционал снапшотов
+- 🌟развернуть k8s-кластер, к которому добавить хранилище на iSCSI
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-storage/README.md)
+
