@@ -1,7 +1,6 @@
 #### Выполненное Д/З №22
 Установить CSI-драйвер и протестировать функционал снапшотов
  - [x] Установить CSI-драйвер и протестировать функционал снапшотов
- - [x] Самостоятельное задание | Установка nginx-ingress
  
 Разворачиваем мини кластер куба: 
 ```
@@ -121,9 +120,9 @@ Events:
   Normal  SuccessfulAttachVolume  51s        attachdetach-controller  AttachVolume.Attach succeeded for volume "pvc-6946a04b-0dd5-4810-b03a-4d562a9d119b"
 ```
 Самые интересные секции:
-- Containers.my-frontend.Mounts - в контейнер замонтирован volume my-csi-volume в директорию /data.
-- Volunes - my-csi-volume это персистентное хранилице мозданое по заявке csi-pvc
-- Events - в ивентах можно увидеть, что volume успешно приатачен.
+- 'Containers.my-frontend.Mounts' - в контейнер замонтирован volume my-csi-volume в директорию /data.
+- 'Volunes' - my-csi-volume это персистентное хранилице мозданое по заявке csi-pvc
+- 'Events' - в ивентах можно увидеть, что volume успешно приатачен.
 
 Проверим как работает HostPath driver:
 
@@ -147,6 +146,7 @@ vagrant@k1s-master:~$ sudo find / -name test1.txt
 Переходим к ДЗ. 
 
 Задание:
+
     * Создать StorageClass для CSI Host Path Driver
     * Создать объект PVC c именем `storage-pvc`
     * Создать объект Pod c именем `storage-pod`
