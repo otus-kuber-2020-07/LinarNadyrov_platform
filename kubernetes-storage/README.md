@@ -146,11 +146,10 @@ vagrant@k1s-master:~$ sudo find / -name test1.txt
 Переходим к ДЗ. 
 
 Задание:
-
-    * Создать StorageClass для CSI Host Path Driver
-    * Создать объект PVC c именем `storage-pvc`
-    * Создать объект Pod c именем `storage-pod`
-    * Хранилище нужно смонтировать в `/data`
+* Создать StorageClass для CSI Host Path Driver
+* Создать объект PVC c именем `storage-pvc`
+* Создать объект Pod c именем `storage-pod`
+* Хранилище нужно смонтировать в `/data`
 
 ```
 cd /kubernetes-storage
