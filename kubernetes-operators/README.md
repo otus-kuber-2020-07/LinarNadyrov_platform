@@ -116,20 +116,29 @@ kubectl apply -f deploy/cr.yml
 * Удалять PersistentVolume, PersistentVolumeClaim, Deployment, Service для mysql
 ```
 ##### Деплой оператора 
-Создаем в папке kubernetes-operator/deploy и применяем эти манифесты:
+Создаем в папке kubernetes-operator/deploy манифесты и применяем их:
 + service-account.yml
 + role.yml
 + role-binding.yml
 + deploy-operator.yml 
 
+Проверим, что все работает: 
 ```
+kubectl get pvc
+NAME                        STATUS   VOLUME                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+backup-mysql-instance-pvc   Bound    backup-mysql-instance-pv   1Gi        RWO                           30m
+mysql-instance-pvc          Bound    mysql-instance-pv          1Gi        RWO                           30
+```
+Заполним базу созданного mysql-instance: 
+```
+export MYSQLPOD=$(kubectl get pods -l app=mysql-instance -o jsonpath="{.items[*].metadata.name}")
+###
 kubectl exec -it $MYSQLPOD -- mysql -u root -potuspassword -e "CREATE TABLE testX ( id smallint unsigned not null auto_increment, name varchar(20) not null, constraint pk_example primary key (id) );" otus-database
-
+###
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "INSERT INTO testX ( id, name ) VALUES ( null, 'dataX' );" otus-database
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "INSERT INTO testX ( id, name ) VALUES ( null, 'dataX2' );" otus-database
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from testX;" otus-database
 ```
-
 Вывод при запущенном MySQL:
 ```
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from test;" otus-database
@@ -151,3 +160,49 @@ mysql: [Warning] Using a password on the command line interface can be insecure.
 |  2 | dataX2      |
 +----+-------------+
 ```
+`Теперь магия`
+
+Удалим mysql-instance:
+```
+kubectl delete mysqls.otus.homework mysql-instance
+```
+Теперь `kubectl get pv` показывает, что PV для mysql больше нет, а `kubectl get jobs.batch` показывает
+```
+kubectl get pvc
+NAME                        STATUS        VOLUME                     CAPACITY   ACCESS MODES   STORAGECLASS   AGE
+backup-mysql-instance-pvc   Bound         backup-mysql-instance-pv   1Gi        RWO                           32m
+mysql-instance-pvc          Terminating   mysql-instance-pv          1Gi        RWO                           32m
+####
+kubectl get jobs.batch
+NAME                         COMPLETIONS   DURATION   AGE
+backup-mysql-instance-job    1/1           2s         15s
+restore-mysql-instance-job   0/1           32m        32m
+```
+
+Создадим заново mysql-instance:
+``` 
+kubectl apply -f deploy/cr.yml
+```
+Немного подождем и: 
+```
+export MYSQLPOD=$(kubectl get pods -l app=mysql-instance -o jsonpath="{.items[*].metadata.name}")
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from test;" otusdatabase
+```
++----+-------------+
+| id | name        |
++----+-------------+
+|  1 | some data   |
+|  2 | some data-2 |
++----+-------------+
+```
+```
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from testX;" otus-database
+mysql: [Warning] Using a password on the command line interface can be insecure.
++----+-------------+
+| id | name        |
++----+-------------+
+|  1 | dataX       |
+|  2 | dataX2      |
++----+-------------+
+```
+
