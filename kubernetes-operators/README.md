@@ -89,7 +89,7 @@ kubectl apply -f deploy/cr.yml
 ```
 ##### Задание по CRD:
 Если сейчас из описания mysql убрать строчку из спецификации, то манифест будет принят API сервером. Для того, чтобы этого избежать, добавьте описание обязательный полей в `CustomResourceDefinition`. 
->>> Подсказка. Пример есть в лекции.
+> Подсказка. Пример есть в лекции.
 
 Конечный вариант [тут](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-operators/kubernetes-operators/deploy/crd.yml). Смотрим ( `spec` )
 
