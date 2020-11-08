@@ -106,6 +106,11 @@
 
 ### 8. Kubernetes-operators
 ### Задание:
+- 
+- 
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-operators/README.md)
 
 
 ### 9. Kubernetes-monitoring
