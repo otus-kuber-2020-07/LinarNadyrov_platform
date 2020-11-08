@@ -183,28 +183,32 @@ restore-mysql-instance-job   0/1           32m        32m
 ``` 
 kubectl apply -f deploy/cr.yml
 ```
+
 Немного подождем и: 
 ```
 export MYSQLPOD=$(kubectl get pods -l app=mysql-instance -o jsonpath="{.items[*].metadata.name}")
-kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from test;" otusdatabase
-```
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from test;" otus-database
 mysql: [Warning] Using a password on the command line interface can be insecure.
+
 +----+-------------+
 | id | name        |
 +----+-------------+
 |  1 | some data   |
 |  2 | some data-2 |
 +----+-------------+
+
 ```
+
 ```
 kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from testX;" otus-database
 mysql: [Warning] Using a password on the command line interface can be insecure.
+
 +----+-------------+
 | id | name        |
 +----+-------------+
 |  1 | dataX       |
 |  2 | dataX2      |
 +----+-------------+
+
 ```
 
