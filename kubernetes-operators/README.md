@@ -104,14 +104,50 @@ kubectl apply -f deploy/cr.yml
 
 ##### Описание контроллера
 Используемый нами контроллер будет обрабатывать два типа событий:
-- При создании объекта типа ( `kind: mySQL` ), он будет:
+1) При создании объекта типа ( `kind: mySQL` ), он будет:
 ```
 * Cоздавать PersistentVolume, PersistentVolumeClaim, Deployment, Service для mysql
 * Создавать PersistentVolume, PersistentVolumeClaim для бэкапов базы данных, если их еще нет.
 * Пытаться восстановиться из бэкапа
 ```
-- При удалении объекта типа ( `kind: mySQL` ), он будет:
+2) При удалении объекта типа ( `kind: mySQL` ), он будет:
 ```
 * Удалять все успешно завершенные backup-job и restore-job
 * Удалять PersistentVolume, PersistentVolumeClaim, Deployment, Service для mysql
+```
+##### Деплой оператора 
+Создаем в папке kubernetes-operator/deploy и применяем эти манифесты:
++ service-account.yml
++ role.yml
++ role-binding.yml
++ deploy-operator.yml 
+
+```
+kubectl exec -it $MYSQLPOD -- mysql -u root -potuspassword -e "CREATE TABLE testX ( id smallint unsigned not null auto_increment, name varchar(20) not null, constraint pk_example primary key (id) );" otus-database
+
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "INSERT INTO testX ( id, name ) VALUES ( null, 'dataX' );" otus-database
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "INSERT INTO testX ( id, name ) VALUES ( null, 'dataX2' );" otus-database
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from testX;" otus-database
+```
+
+Вывод при запущенном MySQL:
+```
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from test;" otus-database
+mysql: [Warning] Using a password on the command line interface can be insecure.
++----+-------------+
+| id | name        |
++----+-------------+
+|  1 | some data   |
+|  2 | some data-2 |
++----+-------------+
+```
+```
+kubectl exec -it $MYSQLPOD -- mysql -potuspassword -e "select * from testX;" otus-database
+mysql: [Warning] Using a password on the command line interface can be insecure.
++----+-------------+
+| id | name        |
++----+-------------+
+|  1 | dataX       |
+|  2 | dataX2      |
++----+-------------+
 ```
