@@ -68,4 +68,27 @@ kubectl describe mysqls.otus.homework mysql-instance
 ```
 kubectl delete mysqls.otus.homework mysql-instance
 ```
-Добавим в спецификацию CRD ( `spec` ) параметры `validation`. Конечный вариант [тут]()
+Добавим в спецификацию CRD ( `spec` ) параметры `validation`. Конечный вариант [тут](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-operators/kubernetes-operators/deploy/crd.yml)
+
+Пробуем применить CRD и CR
+```
+kubectl apply -f deploy/crd.yml
+kubectl apply -f deploy/cr.yml
+
+#
+error: error validating "deploy/cr.yml": error validating data:
+ValidationError(MySQL): unknown field "usless_data" in homework.otus.v1.MySQL; if
+you choose to ignore these errors, turn validation off with --validate=false
+```
+Убираем из cr.yml и применяем: 
+```
+usless_data: "useless info"
+
+kubectl apply -f deploy/cr.yml 
+# Ошибок больше нет
+```
+##### Задание по CRD:
+Если сейчас из описания mysql убрать строчку из спецификации, то манифест будет принят API сервером. Для того, чтобы этого избежать, добавьте описание обязательный полей в `CustomResourceDefinition`. 
+- Подсказка. Пример есть в лекции.
+
+Конечный вариант [тут](https://github.com/otus-kuber-2020-07/LinarNadyrov_platform/blob/kubernetes-operators/kubernetes-operators/deploy/crd.yml). Смотрим ( `spec` )
