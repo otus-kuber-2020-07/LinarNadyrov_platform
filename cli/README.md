@@ -150,6 +150,20 @@ kubectl explain deployment.spec
 # или        
 kubectl explain deploy.spec
 ```
+##### Смотрим сервисы и их endpoints 
+```
+kubectl get svc -A
+
+kubectl describe svc rpc-app-service
+```
+##### Проброс к pod'ам 
+```
+ssh -L local_port:pod_ip:pod_port user@server_ip           
+# пример   ssh -L 7777:10.110.10.15:3000 linarnadyrov@k1-node
+
+kubectl -n namespaces port-forward <pod-name> <pod-port>   
+# пример   kubectl -n monitoring port-forward <grafana-pod-name> 3000
+```
 
 ----
 
