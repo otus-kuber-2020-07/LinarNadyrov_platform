@@ -3,6 +3,8 @@
 - hosts: all
   remote_user: LinarNadyrov
   become: yes
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
   tasks:
   # sudo apt-get install *
   - name: Install docker packages
@@ -16,6 +18,8 @@
       - curl
       - software-properties-common
       - gnupg2
+      - nano
+      - mc
 
   # curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
   - name: Add Docker s official GPG key
@@ -54,16 +58,37 @@
 
   - name: Change storage-driver
     shell: | 
-        cat > /etc/docker/daemon.json <<EOF
-        {
-            "exec-opts": ["native.cgroupdriver=systemd"],
-            "log-driver": "json-file",
-            "log-opts": {
-                "max-size": "100m"
-            },
-            "storage-driver": "overlay2"
-        }
-        EOF
+      cat > /etc/docker/daemon.json <<EOF
+      {
+          "exec-opts": ["native.cgroupdriver=systemd"],
+          "log-driver": "json-file",
+          "log-opts": {
+              "max-size": "100m"
+          },
+          "storage-driver": "overlay2"
+      }
+      EOF
+
+  - name: Added gpg key
+    shell: | 
+      curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+  
+  - name: Added sources.list
+    shell: | 
+      cat > /etc/apt/sources.list.d/kubernetes.list <<EOF
+      deb https://apt.kubernetes.io/ kubernetes-xenial main
+        
+    # sudo apt-get update
+  - name: Update apt packages
+    apt:
+      update_cache: yes
+
+  - name: Install kubeadm, kubectl, kubelet
+    shell: | 
+      apt-get install -y \
+      kubelet=1.17.4-00 \ 
+      kubeadm=1.17.4-00 \ 
+      kubectl=1.17.4-00 
 
   handlers:
   - name: restart docker
