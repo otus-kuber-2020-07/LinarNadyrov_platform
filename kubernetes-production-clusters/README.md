@@ -15,7 +15,7 @@ gcloud compute instances create node-2 --image-family ubuntu-minimal-1804-lts --
 gcloud compute instances create node-3 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1
 
 # Для удаления
-gcloud compute instances delete master
+gcloud compute instances delete master --zone europe-west1-b
 ```
 #### Применяем роль (не хочу руками проходить, заранее извиняюсь просто за shell)
 ```
@@ -38,7 +38,9 @@ master   NotReady   master   72s   v1.17.4
 ```
 
 Установим сетевой плагин calico
-$ kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
+kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+```
 
 Подключаем worker node
 ```
@@ -405,5 +407,130 @@ node-3   Ready    <none>   31m   v1.18.0
 ```
 Можно удалить ресурсы 
 ```
+gcloud compute instances delete master --zone europe-west1-b && \
+gcloud compute instances delete node-1 --zone europe-west1-b && \
+gcloud compute instances delete node-2 --zone europe-west1-b && \
+gcloud compute instances delete node-3 --zone europe-west1-b
+```
+
+----
+
+#### Kubespray
+#### Создание нод для кластера
+В GCP создайте 4 ноды с образом Ubuntu 18.04 LTS:
++ master - 1 экземпляр (n1-standard-2)
++ worker - 3 экземпляра (n1-standard-1)
+
+Закидываем свой ssh-key (проще всего Compute Engine - Metadata - SSH Keys)
 
 ```
+gcloud compute instances create master --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-2 && \
+gcloud compute instances create node-1 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1 && \
+gcloud compute instances create node-2 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1 && \
+gcloud compute instances create node-3 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1
+
+# Для удаления
+gcloud compute instances delete master --zone europe-west1-b
+```
+
+#### Клонируем репу 
+```
+git clone https://github.com/kubernetes-sigs/kubespray.git
+
+# установка зависимостей
+sudo pip install -r requirements.txt
+
+# копирование примера конфига в отдельную директорию
+cp -rfp inventory/sample inventory/k8s_kubespray
+```
+#### Правим хост файл
+vi inventory.ini
+```
+[all]
+master1 ansible_host=35.241.157.15  ip=10.132.0.28 etcd_member_name=etcd1
+node1 ansible_host=104.155.89.56    # ip=10.3.0.1 etcd_member_name=etcd1
+node2 ansible_host=35.195.99.29    # ip=10.3.0.1 etcd_member_name=etcd1
+node3 ansible_host=34.76.161.99   # ip=10.3.0.1 etcd_member_name=etcd1
+
+[kube-master]
+master1
+
+[etcd]
+master1
+
+[kube-node]
+node1
+node2
+node3
+
+[calico-rr]
+
+[k8s-cluster:children]
+kube-master
+kube-node
+calico-rr
+```
+#### Применяем 
+```
+ansible-playbook -i inventory.ini --become --become-user=root \
+    --user=lex --key-file="~/.ssh/gcp-key" cluster.yml
+```
+#### Пересоздаем ресурсы (Для создания 3 мастер нод + 2 воркер нод)
+```
+gcloud compute instances delete master --zone europe-west1-b && \
+gcloud compute instances delete node-1 --zone europe-west1-b && \
+gcloud compute instances delete node-2 --zone europe-west1-b && \
+gcloud compute instances delete node-3 --zone europe-west1-b
+
+gcloud compute instances create master1 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-2 && \
+gcloud compute instances create master2 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-2 && \
+gcloud compute instances create master3 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-2 && \
+gcloud compute instances create node-1 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1 && \
+gcloud compute instances create node-2 --image-family ubuntu-minimal-1804-lts --image-project ubuntu-os-cloud --zone europe-west1-b --machine-type=n1-standard-1 
+```
+#### Правим хост файл
+vi inventory2.ini
+```
+[all]
+master1 ansible_host=34.91.171.49  ip=10.164.0.2 etcd_member_name=etcd1
+master2 ansible_host=34.91.171.49  ip=10.164.0.2 etcd_member_name=etcd1
+master3 ansible_host=34.91.171.49  ip=10.164.0.2 etcd_member_name=etcd1
+node1 ansible_host=35.204.111.222   # ip=10.3.0.1 etcd_member_name=etcd1
+node2 ansible_host=34.90.160.12    # ip=10.3.0.1 etcd_member_name=etcd1
+
+[kube-master]
+master1
+master2
+master3
+
+[etcd]
+master1
+master2
+master3
+
+[kube-node]
+node1
+node2
+
+[calico-rr]
+
+[k8s-cluster:children]
+kube-master
+kube-node
+calico-rr
+```
+#### Применяем 
+```
+ansible-playbook -i inventory2.ini --become --become-user=root \
+    --user=lex --key-file="~/.ssh/gcp-key" cluster.yml
+```
+```
+master1:~$ kubectl get nodes
+NAME      STATUS   ROLES    AGE     VERSION
+master1   Ready    master   6m30s   v1.18.2
+master2   Ready    master   5m40s   v1.18.2
+master3   Ready    master   5m40s   v1.18.2
+node1     Ready    <none>   4m34s   v1.18.2
+node2     Ready    <none>   4m34s   v1.18.2
+```
+#### Удаляем машины
