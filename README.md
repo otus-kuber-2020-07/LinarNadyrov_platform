@@ -181,3 +181,13 @@
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-storage/README.md)
 
+### 23. 
+
+
+### 24. Kubernetes-production-clusters
+### Задание:
+- Подходы к развертыванию
+- Обновление нод при помощи kubeadm
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-production-clusters/README.md)

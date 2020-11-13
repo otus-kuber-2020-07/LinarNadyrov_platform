@@ -1,0 +1,5 @@
+master ansible_host=35.195.229.45 ansible_user=LinarNadyrov
+
+node-1 ansible_host=34.78.48.47 ansible_user=LinarNadyrov
+node-2 ansible_host=34.78.65.50 ansible_user=LinarNadyrov
+node-3 ansible_host=35.195.176.164 ansible_user=LinarNadyrov
