@@ -106,7 +106,11 @@
 
 ### 8. Kubernetes-operators
 ### Задание:
+- Напишем CustomResource и CustomResourceDefinition для mysql оператора
+- Соберем образ и сделаем деплой оператора
 
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-operators/README.md)
 
 ### 9. Kubernetes-monitoring
 ### Задание:
