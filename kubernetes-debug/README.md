@@ -9,8 +9,8 @@ vagrant ssh k1s-master -c 'cat /home/vagrant/.kube/config' > ~/.kube/config
 
 #### kubectl debug | Задание
 - Установите в ваш кластер kubectl debug: 
-+ Выполнив ```brew install aylei/tap/kubectl-debug```
-+ Или скачав архив [отсюда](https://github.com/aylei/kubectl-debug/releases) с исполняемым файлом и добавив его в $PATH
+ + Выполнив ```brew install aylei/tap/kubectl-debug```
+ + Или скачав архив [отсюда](https://github.com/aylei/kubectl-debug/releases) с исполняемым файлом и добавив его в $PATH
 
 - Запустите в кластере поды с агентом kubectl-debug из [этого](https://raw.githubusercontent.com/aylei/kubectl-debug/dd7e4965e4ae5c4f53e6cf9fd17acc964274ca5c/scripts/agent_daemonset.yml) манифеста
 - Проверьте работу команды strace на любом поде (можно использовать Web-сервер из предыдущих заданий)
