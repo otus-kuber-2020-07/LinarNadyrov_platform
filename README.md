@@ -181,7 +181,13 @@
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-storage/README.md)
 
-### 23. 
+### 23. kubernetes-debug
+### Задание:
+- Запуск kubectl debug
+- 
+
+#### Полезные ссылки
+- [Описание выполненного ДЗ](kubernetes-debug/README.md)
 
 
 ### 24. Kubernetes-production-clusters
