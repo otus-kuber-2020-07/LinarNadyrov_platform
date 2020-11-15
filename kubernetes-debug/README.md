@@ -7,7 +7,7 @@ vagrant up
 vagrant ssh k1s-master -c 'cat /home/vagrant/.kube/config' > ~/.kube/config
 ```
 
-#### kubectl debug | Задание
+### kubectl debug | Задание
 - Установите в ваш кластер kubectl debug:
     + Выполнив ```brew install aylei/tap/kubectl-debug```
     + Или скачав архив [отсюда](https://github.com/aylei/kubectl-debug/releases) с исполняемым файлом и добавив его в $PATH
@@ -83,3 +83,19 @@ bash-5.0#
 bash-5.0# strace -c -p29
 strace: Process 29 attached
 ```
+
+### iptables-tailer 
+Он предназначен для того, чтобы выводить информацию об отброшенных iptables пакетах в журнал событий Kubernetes ( kubectl get events )
+
+Основной кейс - сообщить разработчикам сервисов о проблемах с NetworkPolicy.
+
+#### Чтобы выполнить домашнее задание нам потребуется следующее:
+- Кластер k8s c запущенным Calico
+- Тестовое приложение
+- Инсталляция kube-iptables-tailer
+- Результаты работы должны быть в папке kubernetes-debug/kit
+
+#### iptables-tailer | Тестовое приложение
+- Для нашего задания в качестве тестового приложения вы возьмем [netperf-operator](https://github.com/piontec/netperf-operator)
+    + Это Kubernetes-оператор, который позволяет запускать тесты пропускной способности сети между нодами кластера
+    + Сам проект - не очень production-grade, но иногда выручает netperf-operator
