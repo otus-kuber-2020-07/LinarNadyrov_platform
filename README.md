@@ -184,10 +184,12 @@
 ### 23. kubernetes-debug
 ### Задание:
 - Запуск kubectl debug
-- 
+- Работа с инструментом iptables-tailer
 
 #### Полезные ссылки
 - [Описание выполненного ДЗ](kubernetes-debug/README.md)
+- Исходный [код](https://github.com/aylei/kubectl-debug) kubectl-debug
+- Официальный [репозиторий](https://github.com/box/kube-iptables-tailer) kube-iptables-tailer
 
 
 ### 24. Kubernetes-production-clusters
