@@ -28,8 +28,8 @@ kubectl run nginx --image=nginx --port=80 -n default
 манифест который завелся - agent_daemonset.yaml 
 
 # Обратить внимание 
-        - containerPort: 10027
-          hostPort: 32767
+-  containerPort: 10027
+   hostPort: 32767
 ```
 И при запуске debug ругался 
 ```
@@ -67,13 +67,19 @@ Forwarding from 127.0.0.1:10027 -> 10027
 Forwarding from [::1]:10027 -> 10027
 Handling connection for 10027
                              container created, open tty...
-bash-5.0# зы
-bash: зы: command not found
 bash-5.0# ps
 PID   USER     TIME  COMMAND
     1 root      0:00 nginx: master process nginx -g daemon off;
    29 101       0:00 nginx: worker process
-   44 root      0:00 bash
-   51 root      0:00 ps
+   55 root      0:00 bash
+   80 root      0:00 ps
 bash-5.0#
+bash-5.0#
+bash-5.0# strace -c -p1
+strace: Process 1 attached
+^Cstrace: Process 1 detached
+
+bash-5.0#
+bash-5.0# strace -c -p29
+strace: Process 29 attached
 ```
