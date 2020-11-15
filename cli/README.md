@@ -164,7 +164,10 @@ ssh -L local_port:pod_ip:pod_port user@server_ip
 kubectl -n namespaces port-forward <pod-name> <pod-port>   
 # пример   kubectl -n monitoring port-forward <grafana-pod-name> 3000
 ```
-
+##### Команда предназначена для того, чтобы выводить информацию об отброшенных iptables пакетах в журнал событий Kubernetes
+```
+kubectl get events
+```
 ----
 
 ### Использование кластера Kubernetes, предоставляемого как сервис с Google Kubernetes Engine.
