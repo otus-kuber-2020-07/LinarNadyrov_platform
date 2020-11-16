@@ -18,7 +18,7 @@ spec:
           command:
             - "/kube-iptables-tailer"
             - "--log_dir=/my-service-logs" # change the output directory of service logs
-            - "--v=4" # enable V-leveled logging at this level
+            - "--v=6" # enable V-leveled logging at this level
           env: 
             - name: "JOURNAL_DIRECTORY"
               value: "/var/log/journal"

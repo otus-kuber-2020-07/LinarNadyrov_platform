@@ -9,12 +9,24 @@ spec:
   ingress:
     - action: Allow
       source:
-        selector: netperf-role == "netperf-client"
+        selector: netperf-type in {"client", "server"}
+    # - action: Allow
+    #   source:
+    #     selector: netperf-role == "netperf-client"
+    # - action: Allow
+    #   source:
+    #     selector: netperf-role == "netperf-server"
     - action: Log
     - action: Deny
   egress:
     - action: Allow
       destination:
-        selector: netperf-role == "netperf-client"
+        selector: netperf-type in {"client", "server"}
+    # - action: Allow
+    #   destination:
+    #     selector: netperf-role == "netperf-server"
+    # - action: Allow
+    #   destination:
+    #     selector: netperf-role == "netperf-client"
     - action: Log
     - action: Deny
