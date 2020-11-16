@@ -99,3 +99,77 @@ strace: Process 29 attached
 - Для нашего задания в качестве тестового приложения вы возьмем [netperf-operator](https://github.com/piontec/netperf-operator)
     + Это Kubernetes-оператор, который позволяет запускать тесты пропускной способности сети между нодами кластера
     + Сам проект - не очень production-grade, но иногда выручает netperf-operator
+- Установите манифесты для запуска оператора в кластере (лежат в папке deploy в репозитории проекта):
+    + Custom Resource Definition - схема манифестов для запуска тестов Netperf
+    + RBAC - политики и разрешения для нашего оператора
+    + И сам оператор, который будет следить за появлением ресурсов с Kind: Netperf и запускать поды с клиентом и сервером утилиты NetPerf
+
+#### Установка [netperf-operator](https://github.com/piontec/netperf-operator)
+```
+git clone https://github.com/piontec/netperf-operator.git 
+```
+#### Применяем манифесты
+```
+kubectl apply -f ./deploy/crd.yaml
+kubectl apply -f ./deploy/rbac.yaml
+kubectl apply -f ./deploy/operator.yaml
+```
+#### Запускаем пример
+```
+kubectl apply -f ./deploy/cr.yaml
+
+# Смотрим результат 
+kubectl describe netperf.app.example.com/example
+# Нам нужно Done
+Status:
+  Client Pod:          netperf-client-874b00ff94df
+  Server Pod:          netperf-server-874b00ff94df
+  Speed Bits Per Sec:  12662.5
+  Status:              Done
+```
+#### Применяем политику (включаем логирование в iptables) и смотрим как меняется вывод
+```
+kubectl apply -f kit/netperf-calico-policy.yaml
+kubectl delete -f ./deploy/cr.yaml
+kubectl apply -f ./deploy/cr.yaml
+
+# Смотрим результат 
+kubectl describe netperf.app.example.com/example
+# Нам нужно (обратить внимание - Started test, не Done)
+Status:
+  Client Pod:          netperf-client-2469f954d876
+  Server Pod:          netperf-server-2469f954d876
+  Speed Bits Per Sec:  0
+  Status:              Started test
+```
+#### Подключаемся к НОДе по SSH
+```
+sudo iptables --list -nv | grep DROP - счетчики дропов 
+sudo iptables --list -nv | grep LOG
+sudo journalctl -k | grep calico
+```
+#### Запустим iptables-tailer
+```
+kubectl apply -f kit/iptables-tailer.yaml 
+# Смотрим результат
+kubectl describe daemonset kube-iptables-tailer -n kube-system
+
+Events:
+  Type     Reason        Age                 From                  Message
+  ----     ------        ----                ----                  -------
+  Warning  FailedCreate  10s (x13 over 31s)  daemonset-controller  Error creating: pods "kube-iptables-tailer-" is forbidden: error looking up service account kube-system/kube-iptables-tailer: serviceaccount "kube-iptables-tailer" not found
+```
+#### Применим ServiceAccount
+```
+kubectl apply -f kit/kit-serviceaccount.yaml
+kubectl apply -f kit/kit-clusterrole.yaml
+kubectl apply -f kit/kit-clusterrolebinding.yaml
+
+# Чуток подождем и смотрим
+kubectl describe daemonset kube-iptables-tailer -n kube-system
+```
+#### Пересоздадим netperf
+```
+kubectl delete -f ./deploy/cr.yaml
+kubectl apply -f ./deploy/cr.yaml
+```
